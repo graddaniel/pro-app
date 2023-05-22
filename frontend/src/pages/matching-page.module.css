@@ -1,0 +1,13 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    background-color: lightskyblue;
+}
+
+.profile {
+    position: relative;
+    flex-grow: 1;
+    width: 40rem;
+    background-color: lightcoral;
+}
