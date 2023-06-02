@@ -5,7 +5,10 @@ import {
 } from 'sequelize';
 import SequelizeConnection from '../services/sequelize-connection';
 
-export default class PhotoModel extends Model {}
+export default class PhotoModel extends Model {
+    declare id: number;
+    declare url: string;
+}
 
 PhotoModel.init({
     id: {

@@ -12,7 +12,10 @@ const EMAIL_MAX_LENGTH = 64;
 const DESCRIPTION_MAX_LENGTH = 256;
 const NAME_MAX_LENGTH = 32;
 
-export default class ProfileModel extends Model {}
+export default class ProfileModel extends Model {
+    declare id: number;
+    declare description: string;
+}
 
 //TODO split this into account and profile
 ProfileModel.init({
@@ -20,20 +23,6 @@ ProfileModel.init({
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
-    },
-    username: {
-        type: DataTypes.STRING(USERNAME_MAX_LENGTH),
-        allowNull: false,
-        unique: true,
-    },
-    passwordHash: {
-        type: DataTypes.STRING(PASSWORD_LENGTH),
-        allowNull: false,
-    },
-    email: {
-        type: DataTypes.STRING(EMAIL_MAX_LENGTH),
-        allowNull: false,
-        unique: true,
     },
     description: {
         type: DataTypes.STRING(DESCRIPTION_MAX_LENGTH),
