@@ -6,14 +6,11 @@ import {
 import SequelizeConnection from '../services/sequelize-connection';
 import ProfileModel from './profile';
 
+import { AccountRoles } from '../generic/constants';
+
 const USERNAME_MAX_LENGTH = 32;
 const PASSWORD_LENGTH = 64; //SHA256
 const EMAIL_MAX_LENGTH = 64;
-
-export enum AccountRoles {
-    CUSTOMER = 'customer',
-    SERVICE_PROVIDER = 'serviceProvider'
-}
 
 export default class AccountModel extends Model {
     declare id: number;

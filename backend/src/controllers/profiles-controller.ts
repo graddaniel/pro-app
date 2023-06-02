@@ -1,8 +1,11 @@
 import { StatusCodes } from 'http-status-codes';
+import type { Response } from 'express';
 
-import type { Request, Response } from 'express';
+import { DECIMAL_RADIX } from '../generic/constants';
 
+import type { AuthenticatedRequest } from '../generic/types';
 import type ProfilesService from '../services/profiles-service';
+import type ProfileModel from '../models/profile';
 
 
 export default class ProfilesController {
@@ -13,7 +16,7 @@ export default class ProfilesController {
     }
 
     getProfiles = async (
-        req: Request,
+        req: AuthenticatedRequest,
         res: Response,
     ): Promise<void> => {
         const profiles = await this.profilesService.getProfiles();
@@ -21,21 +24,35 @@ export default class ProfilesController {
         res.status(StatusCodes.OK).send(profiles);
     }
 
-    postProfiles = async (
-        req: Request,
+    getProfileByAccountId  = async (
+        req: AuthenticatedRequest,
         res: Response,
     ): Promise<void> => {
         const {
-            username,
-            password,
-            email,
+            id: accountId,
+        } = req.currentUser;
+
+        const profile = await this.profilesService.getProfileByAccountId(accountId);
+
+        res.status(StatusCodes.OK).send(profile);
+    }
+
+    postProfiles = async (
+        req: AuthenticatedRequest,
+        res: Response,
+    ): Promise<void> => {
+        const {
+            id: accountId,
+        } = req.currentUser;
+
+        const {
+            description,
         } = req.body;
         //TODO validation
 
         await this.profilesService.createProfile(
-            username,
-            password,
-            email,
+            accountId,
+            description,
         );
 
         res.status(StatusCodes.OK).send();

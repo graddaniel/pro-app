@@ -8,11 +8,11 @@ import type {
     NextFunction,
 } from 'express';
 import type {
-    Request,
+    AuthenticationRequest,
 } from '../generic/types.js';
 
 export function extractCredentials(
-    req: Request,
+    req: AuthenticationRequest,
     res: Response,
     next: NextFunction,
 ): void {

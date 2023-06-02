@@ -1,10 +1,10 @@
 import BussinessLogicError from '../../generic/business-logic-error';
 
-export default class ProfileAlreadyExists extends BussinessLogicError {
+export default class AccountAlreadyExists extends BussinessLogicError {
     constructor(
         username: string,
         email: string
     ) {
-        super(`Profile with username: ${username} or email: ${email} already exists.`);
+        super(`Account with username: ${username} or email: ${email} already exists.`);
     }
 }

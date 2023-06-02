@@ -11,6 +11,7 @@ import ProfilesService from './services/profiles-service';
 import SequelizeConnection from './services/sequelize-connection';
 import AccountsService from './services/accounts-service';
 import { extractCredentials } from './middleware/extract-credentials';
+import { requireJWT } from './middleware/require-jwt';
 
 
 export default class Appplication {
@@ -35,8 +36,9 @@ export default class Appplication {
         this.app.use('/accounts', accountsRouter);
 
         const profilesRouter = express.Router();
-        profilesRouter.get('/', profilesController.getProfiles);
-        profilesRouter.post('/', profilesController.postProfiles);
+        profilesRouter.get('/', requireJWT, profilesController.getProfiles);
+        profilesRouter.post('/', requireJWT, profilesController.postProfiles);
+        profilesRouter.get('/ofAccount', requireJWT, profilesController.getProfileByAccountId);
         this.app.use('/profiles', profilesRouter);
 
         this.app.use((err, req, res, next) => {

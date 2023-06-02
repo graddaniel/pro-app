@@ -1,12 +1,13 @@
 import { Op } from 'sequelize';
 
-import AccountModel, { AccountRoles } from '../models/account';
+import AccountModel from '../models/account';
 import AccountAlreadyExists from './errors/account-already-exists-error';
 import AccountNotFoundError from './errors/account-not-found-error';
 import IncorrectPasswordError from './errors/incorrect-password-error';
-
 import JWTService from './jwt-service';
 import { hash } from '../utils'
+
+import type { AccountRoles } from '../generic/constants';
 
 export default class AccountsService {
     login = async (

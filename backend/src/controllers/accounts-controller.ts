@@ -3,7 +3,7 @@ import { StatusCodes } from 'http-status-codes';
 import type { Response } from 'express';
 
 import type AccountsService from '../services/accounts-service';
-import type { Request } from '../generic/types';
+import type { AuthenticationRequest } from '../generic/types';
 
 export default class AccountsController {
     private accountsService: AccountsService;
@@ -13,7 +13,7 @@ export default class AccountsController {
     }
 
     getAccounts = async (
-        req: Request,
+        req: AuthenticationRequest,
         res: Response,
     ): Promise<void> => {
         const {
@@ -30,7 +30,7 @@ export default class AccountsController {
     }
 
     postAccounts = async (
-        req: Request,
+        req: AuthenticationRequest,
         res: Response,
     ): Promise<void> => {
         const {
