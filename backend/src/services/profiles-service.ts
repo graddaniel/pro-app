@@ -1,5 +1,4 @@
 import ProfileModel from '../models/profile';
-import { hash } from '../utils'
 import ProfileAlreadyExists from './errors/profile-already-exists-error';
 
 export default class ProfilesService {
@@ -19,6 +18,8 @@ export default class ProfilesService {
 
     createProfile = async (
         accountId: number,
+        name: string,
+        age: number,
         description: string,
     ): Promise<void> => {
         const foundProfile = await ProfileModel.findOne({
@@ -32,6 +33,8 @@ export default class ProfilesService {
 
         ProfileModel.create({
             accountId,
+            name,
+            age,
             description,
         });
     }

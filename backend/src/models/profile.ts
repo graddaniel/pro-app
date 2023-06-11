@@ -17,7 +17,6 @@ export default class ProfileModel extends Model {
     declare description: string;
 }
 
-//TODO split this into account and profile
 ProfileModel.init({
     id: {
         type: DataTypes.INTEGER,
@@ -27,15 +26,15 @@ ProfileModel.init({
     description: {
         type: DataTypes.STRING(DESCRIPTION_MAX_LENGTH),
     },
-    /*name: {
+    name: {
         type: DataTypes.STRING(NAME_MAX_LENGTH),
         allowNull: false,
     },
     age: {
         type: DataTypes.NUMBER,
         allowNull: false,
-    }*/
-    // address
+    },
+    // address: {}
     // services
     // price min
     // price max

@@ -46,12 +46,16 @@ export default class ProfilesController {
         } = req.currentUser;
 
         const {
+            name,
+            age,
             description,
         } = req.body;
         //TODO validation
 
         await this.profilesService.createProfile(
             accountId,
+            name,
+            age,
             description,
         );
 

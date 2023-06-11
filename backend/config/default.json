@@ -8,5 +8,9 @@
         "host": "localhost",
         "port": 3306,
         "name": "proapp"
+    },
+    "photos": {
+        "directory": "/home/danielpriv/Documents/Projects/pro-app/photos",
+        "maxCount": 5
     }
 }
