@@ -14,6 +14,7 @@ import MatchingPage from './src/pages/matching-page';
 import MatchesPage from './src/pages/matches-page';
 import ProfilePage from './src/pages/profile-page';
 import RegisterPage from './src/pages/register/register-page';
+import LoginPage from './src/pages/login/login-page';
 
 import ROUTES from './src/consts/routes';
 
@@ -38,6 +39,10 @@ const router = createBrowserRouter(
             <Route
                 path={ROUTES.REGISTER_PAGE.PATH}
                 element={<RegisterPage />}
+            />
+            <Route
+                path={ROUTES.LOGIN_PAGE.PATH}
+                element={<LoginPage />}
             />
         </Route>
     )

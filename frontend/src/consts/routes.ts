@@ -10,6 +10,9 @@ const ROUTES = {
     },
     REGISTER_PAGE: {
         PATH: '/register'
+    },
+    LOGIN_PAGE: {
+        PATH: '/login'
     }
 };
 

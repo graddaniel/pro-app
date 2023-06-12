@@ -3,6 +3,8 @@ import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { BottomNavigation, BottomNavigationAction } from '@mui/material';
 import { Group, Map, ManageAccounts, PersonAdd } from '@mui/icons-material';
 
+import LoginIcon from '@mui/icons-material/Login';
+
 import ROUTES from './consts/routes';
 
 import classes from './application.module.css';
@@ -44,6 +46,12 @@ const Application = () => {
                     icon={<PersonAdd />}
                     component={Link}
                     to={ROUTES.REGISTER_PAGE.PATH}
+                />
+                <BottomNavigationAction
+                    label='Login'
+                    icon={<LoginIcon />}
+                    component={Link}
+                    to={ROUTES.LOGIN_PAGE.PATH}
                 />
             </BottomNavigation>
         </main>
