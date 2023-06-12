@@ -22,6 +22,17 @@
         "password": {
             "minLength": 8,
             "maxLength": 32
+        },
+        "name": {
+            "minLength": 1,
+            "maxLength": 32
+        },
+        "age": {
+            "min": 18
+        },
+        "description": {
+            "minLength": 1,
+            "maxLength": 256
         }
     }
 }
