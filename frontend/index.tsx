@@ -6,21 +6,21 @@ import {
     createBrowserRouter,
     createRoutesFromElements,
     Route,
-    RouterProvider,
+    RouterProvider
 } from 'react-router-dom';
 
 import Application from './src/application';
 import MatchingPage from './src/pages/matching-page';
 import MatchesPage from './src/pages/matches-page';
 import ProfilePage from './src/pages/profile-page';
+import RegisterPage from './src/pages/register/register-page';
 
 import ROUTES from './src/consts/routes';
-
 
 const router = createBrowserRouter(
     createRoutesFromElements(
         <Route
-            path="/"
+            path='/'
             element={<Application />}
         >
             <Route
@@ -35,10 +35,14 @@ const router = createBrowserRouter(
                 path={ROUTES.PROFILE_PAGE.PATH}
                 element={<ProfilePage />}
             />
+            <Route
+                path={ROUTES.REGISTER_PAGE.PATH}
+                element={<RegisterPage />}
+            />
         </Route>
     )
 );
 
 const container = document.getElementById('root');
 const root = createRoot(container!);
-root.render(<RouterProvider router={router}/>);
+root.render(<RouterProvider router={router} />);

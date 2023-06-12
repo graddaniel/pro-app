@@ -7,6 +7,9 @@ const ROUTES = {
     },
     PROFILE_PAGE: {
         PATH: '/profile'
+    },
+    REGISTER_PAGE: {
+        PATH: '/register'
     }
 };
 

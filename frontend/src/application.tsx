@@ -1,21 +1,7 @@
-import React, {
-    useEffect,
-} from 'react';
-import {
-    Outlet,
-    Link,
-    useLocation,
-    useNavigate,
-} from 'react-router-dom'
-import {
-    BottomNavigation,
-    BottomNavigationAction,
-} from '@mui/material';
-import {
-    Group,
-    Map,
-    ManageAccounts
-} from '@mui/icons-material';
+import React, { useEffect } from 'react';
+import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
+import { BottomNavigation, BottomNavigationAction } from '@mui/material';
+import { Group, Map, ManageAccounts, PersonAdd } from '@mui/icons-material';
 
 import ROUTES from './consts/routes';
 
@@ -36,22 +22,28 @@ const Application = () => {
             <Outlet />
             <BottomNavigation>
                 <BottomNavigationAction
-                    label="Swipe"
+                    label='Swipe'
                     icon={<Group />}
                     component={Link}
                     to={ROUTES.MATCHING_PAGE.PATH}
                 />
                 <BottomNavigationAction
-                    label="Matches"
+                    label='Matches'
                     icon={<Map />}
                     component={Link}
                     to={ROUTES.MATCHES_PAGE.PATH}
                 />
                 <BottomNavigationAction
-                    label="Profile"
+                    label='Profile'
                     icon={<ManageAccounts />}
                     component={Link}
                     to={ROUTES.PROFILE_PAGE.PATH}
+                />
+                <BottomNavigationAction
+                    label='Register'
+                    icon={<PersonAdd />}
+                    component={Link}
+                    to={ROUTES.REGISTER_PAGE.PATH}
                 />
             </BottomNavigation>
         </main>
