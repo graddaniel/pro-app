@@ -6,59 +6,58 @@ import { DECIMAL_RADIX } from '../generic/constants';
 import type { AuthenticatedRequest } from '../generic/types';
 import type ProfilesService from '../services/profiles-service';
 import type ProfileModel from '../models/profile';
-
+import ProfileValidator from './validators/profiles-validator';
 
 export default class ProfilesController {
-    private profilesService: ProfilesService;
+   private profilesService: ProfilesService;
 
-    constructor(profilesService: ProfilesService) {
-        this.profilesService = profilesService;
-    }
+   constructor(profilesService: ProfilesService) {
+      this.profilesService = profilesService;
+   }
 
-    getProfiles = async (
-        req: AuthenticatedRequest,
-        res: Response,
-    ): Promise<void> => {
-        const profiles = await this.profilesService.getProfiles();
+   getProfiles = async (
+      req: AuthenticatedRequest,
+      res: Response
+   ): Promise<void> => {
+      const profiles = await this.profilesService.getProfiles();
 
-        res.status(StatusCodes.OK).send(profiles);
-    }
+      res.status(StatusCodes.OK).send(profiles);
+   };
 
-    getProfileByAccountId  = async (
-        req: AuthenticatedRequest,
-        res: Response,
-    ): Promise<void> => {
-        const {
-            id: accountId,
-        } = req.currentUser;
+   getProfileByAccountId = async (
+      req: AuthenticatedRequest,
+      res: Response
+   ): Promise<void> => {
+      const { id: accountId } = req.currentUser;
 
-        const profile = await this.profilesService.getProfileByAccountId(accountId);
+      const profile = await this.profilesService.getProfileByAccountId(
+         accountId
+      );
 
-        res.status(StatusCodes.OK).send(profile);
-    }
+      res.status(StatusCodes.OK).send(profile);
+   };
 
-    postProfiles = async (
-        req: AuthenticatedRequest,
-        res: Response,
-    ): Promise<void> => {
-        const {
-            id: accountId,
-        } = req.currentUser;
+   postProfiles = async (
+      req: AuthenticatedRequest,
+      res: Response
+   ): Promise<void> => {
+      const { id: accountId } = req.currentUser;
 
-        const {
-            name,
-            age,
-            description,
-        } = req.body;
-        //TODO validation
+      const { name, age, description } = req.body;
 
-        await this.profilesService.createProfile(
-            accountId,
-            name,
-            age,
-            description,
-        );
+      await ProfileValidator.validateNewProfile({
+         name,
+         age,
+         description
+      });
 
-        res.status(StatusCodes.OK).send();
-    }
+      await this.profilesService.createProfile(
+         accountId,
+         name,
+         age,
+         description
+      );
+
+      res.status(StatusCodes.OK).send();
+   };
 }

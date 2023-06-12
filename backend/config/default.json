@@ -1,27 +1,41 @@
 {
-    "api": {
-        "port": 8081
-    },
-    "database": {
-        "username": "user",
-        "password": "password",
-        "host": "localhost",
-        "port": 3306,
-        "name": "proapp"
-    },
-    "photos": {
-        "directory": "/home/danielpriv/Documents/Projects/pro-app/photos",
-        "maxCount": 5
-    },
-    "validation": {
-        "username": {
-            "minLength": 8,
-            "maxLength": 32,
-            "regexp": "^[a-zA-Z0-9]+$"
-        },
-        "password": {
-            "minLength": 8,
-            "maxLength": 32
-        }
-    }
+   "api": {
+      "port": 8081
+   },
+   "database": {
+      "username": "user",
+      "password": "password",
+      "host": "localhost",
+      "port": 3306,
+      "name": "proapp"
+   },
+   "photos": {
+      "directory": "/home/danielpriv/Documents/Projects/pro-app/photos",
+      "maxCount": 5
+   },
+   "validation": {
+      "username": {
+         "minLength": 8,
+         "maxLength": 32,
+         "regexp": "^[a-zA-Z0-9]+$"
+      },
+      "password": {
+         "minLength": 8,
+         "maxLength": 32
+      },
+      "name": {
+         "minLength": 8,
+         "maxLength": 32,
+         "regexp": "^[a-zA-Z0-9]+$"
+      },
+      "age": {
+         "min": 18,
+         "max": 100
+      },
+      "description": {
+         "minLength": 1,
+         "maxLength": 256,
+         "regexp": "^[A-Za-z0-9.,!?'\"()\\[\\]{}\\-_\\s]+$"
+      }
+   }
 }
