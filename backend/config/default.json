@@ -17,7 +17,7 @@
         "username": {
             "minLength": 8,
             "maxLength": 32,
-            "regexp": "//^[a-zA-Z0-9_]+$//"
+            "regexp": "^[a-zA-Z0-9]+$"
         },
         "password": {
             "minLength": 8,

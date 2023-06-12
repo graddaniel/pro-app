@@ -20,6 +20,7 @@ PhotoModel.init({
         type: DataTypes.TEXT,
     }
 }, {
+    modelName: 'photo',
     timestamps: false,
     sequelize: SequelizeConnection.instance(),
 });

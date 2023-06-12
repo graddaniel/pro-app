@@ -6,15 +6,14 @@ import SequelizeConnection from '../services/sequelize-connection';
 
 import PhotoModel from './photo';
 
-const USERNAME_MAX_LENGTH = 32;
-const PASSWORD_LENGTH = 64; //SHA256
-const EMAIL_MAX_LENGTH = 64;
 const DESCRIPTION_MAX_LENGTH = 256;
 const NAME_MAX_LENGTH = 32;
 
 export default class ProfileModel extends Model {
     declare id: number;
     declare description: string;
+    name: string;
+    age: number;
 }
 
 ProfileModel.init({
@@ -31,7 +30,7 @@ ProfileModel.init({
         allowNull: false,
     },
     age: {
-        type: DataTypes.NUMBER,
+        type: DataTypes.INTEGER,
         allowNull: false,
     },
     // address: {}
@@ -39,6 +38,7 @@ ProfileModel.init({
     // price min
     // price max
 }, {
+    modelName: 'profile',
     timestamps: false,
     sequelize: SequelizeConnection.instance(),
 });

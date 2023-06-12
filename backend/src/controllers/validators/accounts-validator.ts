@@ -37,7 +37,7 @@ export default class AccountsValidator {
             return await newAccountSchema.validate(newAccount);
         } catch (error) {
             //TODO log original error
-
+            console.log("VALIDATION", error)
             throw new ValidationError(
                 (error as YupValidationError).errors[0]
             );

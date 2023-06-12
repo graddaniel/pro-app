@@ -45,6 +45,7 @@ AccountModel.init({
         allowNull: false,
     }
 }, {
+    modelName: 'account',
     timestamps: false,
     sequelize: SequelizeConnection.instance(),
 });
