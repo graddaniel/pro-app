@@ -12,5 +12,16 @@
     "photos": {
         "directory": "/home/danielpriv/Documents/Projects/pro-app/photos",
         "maxCount": 5
+    },
+    "validation": {
+        "username": {
+            "minLength": 8,
+            "maxLength": 32,
+            "regexp": "//^[a-zA-Z0-9_]+$//"
+        },
+        "password": {
+            "minLength": 8,
+            "maxLength": 32
+        }
     }
 }

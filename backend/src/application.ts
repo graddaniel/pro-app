@@ -73,7 +73,7 @@ export default class Appplication {
                 console.log("SENT");
                 next(err);
             }
-            console.log("ERROR", err)
+            console.log("ERROR", err.statusCode, err)
 
             res.status(err.statusCode).send(err.message);
         })

@@ -1,5 +1,7 @@
 import { StatusCodes } from 'http-status-codes';
 
+import AccountsValidator from './validators/accounts-validator';
+
 import type { Response } from 'express';
 
 import type AccountsService from '../services/accounts-service';
@@ -42,7 +44,13 @@ export default class AccountsController {
             email,
             role,
         } = req.body;
-        //TODO validation
+        
+        await AccountsValidator.validateNewAccount({
+            username,
+            password,
+            email,
+            role,
+        });
 
         const jwtToken = await this.accountsService.register(
             username,
