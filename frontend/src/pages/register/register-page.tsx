@@ -15,7 +15,10 @@ const styles = {
 
 const RegisterPage = () => {
     return (
-        <Box sx={styles.box}>
+        <Box
+            component='section'
+            sx={styles.box}
+        >
             <Typography
                 component='h1'
                 variant='h3'

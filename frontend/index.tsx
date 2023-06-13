@@ -17,6 +17,7 @@ import RegisterPage from './src/pages/register/register-page';
 import LoginPage from './src/pages/login/login-page';
 
 import ROUTES from './src/consts/routes';
+import { registerAction } from './src/pages/register/register-form';
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -39,6 +40,7 @@ const router = createBrowserRouter(
             <Route
                 path={ROUTES.REGISTER_PAGE.PATH}
                 element={<RegisterPage />}
+                action={registerAction}
             />
             <Route
                 path={ROUTES.LOGIN_PAGE.PATH}
