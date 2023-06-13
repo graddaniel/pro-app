@@ -60,10 +60,10 @@ const styles = {
 };
 
 const registerForm = () => {
-    const [username, setUsername] = useState('p');
-    const [password, setPassword] = useState('p');
-    const [confirmPassword, setConfirmPassword] = useState('p');
-    const [email, setEmail] = useState('p@p.p');
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [email, setEmail] = useState('');
     const [role, setRole] = useState(AccountRoles.CUSTOMER);
 
     const actionData = useActionData();
@@ -92,6 +92,7 @@ const registerForm = () => {
         setRole(value);
     };
 
+    // TODO add validation errors to the form
     return (
         <Paper
             elevation={3}

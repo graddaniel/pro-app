@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEventHandler } from 'react';
+import React, { ChangeEvent } from 'react';
 import axios from 'axios';
 import {
     FormControl,
@@ -8,6 +8,34 @@ import {
     Button,
     InputLabel
 } from '@mui/material';
+import * as Yup from 'yup';
+
+import { Form, json, redirect, useActionData } from 'react-router-dom';
+
+const validationSchema = Yup.object({
+    username: Yup.string().required().min(8).max(32),
+    password: Yup.string().required().min(8).max(32)
+});
+
+export const loginAction = async ({ request }) => {
+    const form = await request.formData();
+    const formToJson = Object.fromEntries(form.entries());
+
+    try {
+        await validationSchema.validate(formToJson);
+    } catch (error) {
+        return json(error);
+    }
+
+    try {
+        await axios.post('http://localhost:8081/api/login');
+    } catch (error) {
+        console.error(`[ACTION ERROR]: ${error}`);
+        return json({ message: 'Something went wrong!' });
+    }
+
+    return redirect('/');
+};
 
 const styles = {
     paper: {
@@ -28,28 +56,8 @@ const styles = {
 const loginForm = () => {
     const [username, setUsername] = React.useState('');
     const [password, setPassword] = React.useState('');
-    const [loading, setLoading] = React.useState(false);
 
-    const handleSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
-        event.preventDefault();
-        const data = new FormData(event.currentTarget);
-
-        try {
-            setLoading(true);
-            const response = await axios.post(
-                'http://localhost:8081/api/login',
-                data
-            );
-
-            // TODO Redirect to login page
-            console.log(response.data);
-        } catch (error) {
-            // TODO Error handling
-            console.log(error);
-        }
-
-        setLoading(false);
-    };
+    const actionData = useActionData();
 
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
@@ -64,43 +72,42 @@ const loginForm = () => {
         }
     };
 
+    // TODO add validation error messages
     return (
         <Paper
             elevation={3}
-            onSubmit={handleSubmit}
             sx={styles.paper}
-            component='form'
-            method='POST'
         >
-            <FormGroup sx={styles.formGroup}>
-                <FormControl>
-                    <InputLabel htmlFor='username'>Username</InputLabel>
-                    <Input
-                        name='username'
-                        type='text'
-                        value={username}
-                        onChange={handleInputChange}
-                        required
-                    />
-                </FormControl>
-                <FormControl>
-                    <InputLabel htmlFor='password'>Password</InputLabel>
-                    <Input
-                        name='password'
-                        type='password'
-                        value={password}
-                        onChange={handleInputChange}
-                        required
-                    />
-                </FormControl>
-                <Button
-                    type='submit'
-                    variant='contained'
-                    disabled={loading}
-                >
-                    Login
-                </Button>
-            </FormGroup>
+            <Form method='post'>
+                <FormGroup sx={styles.formGroup}>
+                    <FormControl>
+                        <InputLabel htmlFor='username'>Username</InputLabel>
+                        <Input
+                            name='username'
+                            type='text'
+                            value={username}
+                            onChange={handleInputChange}
+                            required
+                        />
+                    </FormControl>
+                    <FormControl>
+                        <InputLabel htmlFor='password'>Password</InputLabel>
+                        <Input
+                            name='password'
+                            type='password'
+                            value={password}
+                            onChange={handleInputChange}
+                            required
+                        />
+                    </FormControl>
+                    <Button
+                        type='submit'
+                        variant='contained'
+                    >
+                        Login
+                    </Button>
+                </FormGroup>
+            </Form>
         </Paper>
     );
 };

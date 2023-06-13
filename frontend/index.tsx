@@ -18,6 +18,7 @@ import LoginPage from './src/pages/login/login-page';
 
 import ROUTES from './src/consts/routes';
 import { registerAction } from './src/pages/register/register-form';
+import { loginAction } from './src/pages/login/login-form';
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -45,6 +46,7 @@ const router = createBrowserRouter(
             <Route
                 path={ROUTES.LOGIN_PAGE.PATH}
                 element={<LoginPage />}
+                action={loginAction}
             />
         </Route>
     )
