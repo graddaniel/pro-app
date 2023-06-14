@@ -26,7 +26,7 @@
         "name": {
             "minLength": 1,
             "maxLength": 32,
-            "regexp": "^[A-Za-z\\s]+$"
+            "regexp": "^[A-Za-z ]+$"
         },
         "description": {
             "minLength": 1,

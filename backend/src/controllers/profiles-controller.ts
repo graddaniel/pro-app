@@ -28,7 +28,9 @@ export default class ProfilesController {
         req: AuthenticatedRequest,
         res: Response
     ): Promise<void> => {
-        const { id: accountId } = req.currentUser;
+        const {
+            id: accountId
+        } = req.currentUser;
 
         const profile = await this.profilesService.getProfileByAccountId(
             accountId
@@ -41,7 +43,9 @@ export default class ProfilesController {
         req: AuthenticatedRequest,
         res: Response
     ): Promise<void> => {
-        const { id: accountId } = req.currentUser;
+        const {
+            id: accountId
+        } = req.currentUser;
 
         const { name, age, description } = req.body;
 
