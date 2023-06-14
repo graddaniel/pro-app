@@ -1,7 +1,9 @@
 import 'react-app-polyfill/ie11';
 import 'react-app-polyfill/stable';
 import * as React from 'react';
-import { createRoot } from 'react-dom/client';
+import {
+    createRoot
+} from 'react-dom/client';
 import {
     createBrowserRouter,
     createRoutesFromElements,
@@ -13,12 +15,14 @@ import Application from './src/application';
 import MatchingPage from './src/pages/matching-page';
 import MatchesPage from './src/pages/matches-page';
 import ProfilePage from './src/pages/profile-page';
-import RegisterPage from './src/pages/register/register-page';
+import RegistrationPage from './src/pages/registration/registration-page';
 import LoginPage from './src/pages/login/login-page';
 
 import ROUTES from './src/consts/routes';
-import { registerAction } from './src/pages/register/register-form';
-import { loginAction } from './src/pages/login/login-form';
+import {
+    registrationAction,
+    loginAction
+} from './src/actions/auth-action';
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -39,9 +43,9 @@ const router = createBrowserRouter(
                 element={<ProfilePage />}
             />
             <Route
-                path={ROUTES.REGISTER_PAGE.PATH}
-                element={<RegisterPage />}
-                action={registerAction}
+                path={ROUTES.REGISTRATION_PAGE.PATH}
+                element={<RegistrationPage />}
+                action={registrationAction}
             />
             <Route
                 path={ROUTES.LOGIN_PAGE.PATH}

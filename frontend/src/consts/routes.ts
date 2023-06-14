@@ -8,8 +8,8 @@ const ROUTES = {
     PROFILE_PAGE: {
         PATH: '/profile'
     },
-    REGISTER_PAGE: {
-        PATH: '/register'
+    REGISTRATION_PAGE: {
+        PATH: '/registration'
     },
     LOGIN_PAGE: {
         PATH: '/login'
