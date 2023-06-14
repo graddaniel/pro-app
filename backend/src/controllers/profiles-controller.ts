@@ -6,7 +6,7 @@ import { DECIMAL_RADIX } from '../generic/constants';
 import type { AuthenticatedRequest } from '../generic/types';
 import type ProfilesService from '../services/profiles-service';
 import type ProfileModel from '../models/profile';
-
+import ProfileValidator from './validators/profile-validator';
 
 export default class ProfilesController {
     private profilesService: ProfilesService;
@@ -17,48 +17,51 @@ export default class ProfilesController {
 
     getProfiles = async (
         req: AuthenticatedRequest,
-        res: Response,
+        res: Response
     ): Promise<void> => {
         const profiles = await this.profilesService.getProfiles();
 
         res.status(StatusCodes.OK).send(profiles);
-    }
+    };
 
-    getProfileByAccountId  = async (
+    getProfileByAccountId = async (
         req: AuthenticatedRequest,
-        res: Response,
+        res: Response
     ): Promise<void> => {
         const {
-            id: accountId,
+            id: accountId
         } = req.currentUser;
 
-        const profile = await this.profilesService.getProfileByAccountId(accountId);
+        const profile = await this.profilesService.getProfileByAccountId(
+            accountId
+        );
 
         res.status(StatusCodes.OK).send(profile);
-    }
+    };
 
     postProfiles = async (
         req: AuthenticatedRequest,
-        res: Response,
+        res: Response
     ): Promise<void> => {
         const {
-            id: accountId,
+            id: accountId
         } = req.currentUser;
 
-        const {
+        const { name, age, description } = req.body;
+
+        await ProfileValidator.validateNewProfile({
             name,
             age,
-            description,
-        } = req.body;
-        //TODO validation
+            description
+        });
 
         await this.profilesService.createProfile(
             accountId,
             name,
             age,
-            description,
+            description
         );
 
         res.status(StatusCodes.OK).send();
-    }
+    };
 }

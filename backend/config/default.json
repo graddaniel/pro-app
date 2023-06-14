@@ -22,6 +22,15 @@
         "password": {
             "minLength": 8,
             "maxLength": 32
+        },
+        "name": {
+            "minLength": 1,
+            "maxLength": 32,
+            "regexp": "^[A-Za-z ]+$"
+        },
+        "description": {
+            "minLength": 1,
+            "maxLength": 256
         }
     }
 }
