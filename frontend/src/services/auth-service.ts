@@ -1,10 +1,11 @@
 import axios from 'axios';
 import {
-    AccountRoles
-} from '../consts/constants';
-import {
     json,
 } from 'react-router-dom';
+
+import {
+    AccountRoles
+} from '../consts/constants';
 
 export interface LoginData {
     username: string;

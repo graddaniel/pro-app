@@ -1,8 +1,9 @@
+import React from 'react';
 import {
     Typography,
     Box
 } from '@mui/material';
-import React from 'react';
+
 import RegisterForm from '../../components/registration-form';
 
 import classes from './registration-page.module.css';
