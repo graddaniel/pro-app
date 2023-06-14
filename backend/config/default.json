@@ -25,10 +25,8 @@
         },
         "name": {
             "minLength": 1,
-            "maxLength": 32
-        },
-        "age": {
-            "min": 18
+            "maxLength": 32,
+            "regexp": "^[A-Za-z\\s]+$"
         },
         "description": {
             "minLength": 1,
