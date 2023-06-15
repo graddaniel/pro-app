@@ -8,7 +8,7 @@ import LoginForm from '../../components/login-form';
 
 import classes from './login-page.module.css';
 
-const loginPage = () => {
+const LoginPage = () => {
     return (
         <Box
             className={classes.box}
@@ -24,4 +24,4 @@ const loginPage = () => {
     );
 };
 
-export default loginPage;
+export default LoginPage;

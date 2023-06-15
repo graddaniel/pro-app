@@ -1,5 +1,6 @@
 import React, {
-    ChangeEvent
+    ChangeEvent,
+    useCallback
 } from 'react';
 import {
     FormGroup,
@@ -8,8 +9,7 @@ import {
     TextField
 } from '@mui/material';
 import {
-    Form,
-    useActionData
+    Form
 } from 'react-router-dom';
 
 import classes from './login-form.module.css';
@@ -23,7 +23,8 @@ const LoginForm = () => {
     const [username, setUsername] = React.useState('');
     const [password, setPassword] = React.useState('');
 
-    const actionData = useActionData();
+    const handleUsernameChange = useCallback((event: ChangeEvent<HTMLInputElement>) => setUsername(event.target.value), []);
+    const handlePasswordChange = useCallback((event: ChangeEvent<HTMLInputElement>) => setPassword(event.target.value), []);
 
     return (
         <Paper
@@ -37,16 +38,19 @@ const LoginForm = () => {
                         label="username"
                         type="text"
                         value={username}
-                        onChange={(event: ChangeEvent<HTMLInputElement>) => setUsername(event.target.value)}
+                        onChange={handleUsernameChange}
                         required
-                        inputProps={InputProps}
+                        inputProps={{
+                            ...InputProps,
+                            pattern: '^[a-zA-Z0-9]+$'
+                        }}
                     />
                     <TextField
                         name="password"
                         label="password"
                         type="password"
                         value={password}
-                        onChange={(event: ChangeEvent<HTMLInputElement>) => setPassword(event.target.value)}
+                        onChange={handlePasswordChange}
                         required
                         inputProps={InputProps}
                     />

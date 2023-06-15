@@ -8,7 +8,7 @@ import RegisterForm from '../../components/registration-form';
 
 import classes from './registration-page.module.css';
 
-const RegisterPage = () => {
+const RegistrationPage = () => {
     return (
         <Box
             component='section'
@@ -25,4 +25,4 @@ const RegisterPage = () => {
     );
 };
 
-export default RegisterPage;
+export default RegistrationPage;

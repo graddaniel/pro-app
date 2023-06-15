@@ -1,7 +1,4 @@
 import axios from 'axios';
-import {
-    json,
-} from 'react-router-dom';
 
 import {
     AccountRoles
@@ -16,18 +13,15 @@ export const loginService = async ({ username, password }: LoginData) => {
     const credentials = btoa(`${username}:${password}`);
 
     try {
-        const response = await axios.post('http://localhost:8081/accounts/login', null, {
+        const response = await axios.get('http://localhost:8081/accounts/login', {
             headers: {
                 'Authorization': `Basic ${credentials}`
             }
         });
 
-       // TODO - save token and catch error codes
-
         return response.data;
     } catch (error) {
         console.error(`[ACTION ERROR]: ${error}`);
-        return json({ error });
     }
 }
 
@@ -39,20 +33,21 @@ export interface RegistrationData {
 }
 
 export const registrationService = async ({username, password, email, role}: RegistrationData) => {
-    const credentials = btoa(`${username}:${password}:${email}:${role}`);
+    const credentials = btoa(`${username}:${password}`);
+    const requestBody = {
+        email,
+        role
+    }
 
     try {
-        const response = await axios.post('http://localhost:8081/accounts/register', null , {
+        const response = await axios.post('http://localhost:8081/accounts/register', requestBody , {
             headers: {
                 'Authorization': `Basic ${credentials}`
             }
         });
 
-        // TODO - save token and catch error codes
-
         return response.data;
     } catch (error) {
         console.error(`[ACTION ERROR]: ${error}`);
-        return json({ error });
     }
 }

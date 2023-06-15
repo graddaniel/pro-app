@@ -6,7 +6,8 @@ import {
 } from '@mui/material';
 import React, {
     ChangeEvent,
-    useState
+    useState,
+    useCallback
 } from 'react';
 import {
     Form,
@@ -24,15 +25,19 @@ const InputProps = {
     maxLength: 32
 };
 
-const registerForm = () => {
+const RegistrationForm = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [email, setEmail] = useState('');
     const [role, setRole] = useState(AccountRoles.CUSTOMER);
 
-    const actionData = useActionData();
-
+    const handleUsernameChange = useCallback((event: ChangeEvent<HTMLInputElement>) => setUsername(event.target.value), []);
+    const handlePasswordChange = useCallback((event: ChangeEvent<HTMLInputElement>) => setPassword(event.target.value), []);
+    const handleConfirmPasswordChange = useCallback((event: ChangeEvent<HTMLInputElement>) => setConfirmPassword(event.target.value), []);
+    const handleEmailChange = useCallback((event: ChangeEvent<HTMLInputElement>) => setEmail(event.target.value), []);
+    const handleRoleChange = useCallback((event: ChangeEvent<HTMLInputElement>) => setRole(event.target.value as AccountRoles), []);
+        
     return (
         <Paper
             elevation={3}
@@ -45,16 +50,19 @@ const registerForm = () => {
                         label="username"
                         type="text"
                         value={username}
-                        onChange={(event: ChangeEvent<HTMLInputElement>) => setUsername(event.target.value)}
+                        onChange={handleUsernameChange}
                         required
-                        inputProps={InputProps}
+                        inputProps={{
+                            ...InputProps,
+                            pattern: '^[a-zA-Z0-9]+$'
+                        }}
                     />
                     <TextField
                         name="password"  
                         label="password"
                         type="password"
                         value={password}
-                        onChange={(event: ChangeEvent<HTMLInputElement>) => setPassword(event.target.value)}
+                        onChange={handlePasswordChange}
                         required
                         inputProps={InputProps}
                     />
@@ -63,7 +71,7 @@ const registerForm = () => {
                         label="confirm password"
                         type="password"
                         value={confirmPassword}
-                        onChange={(event: ChangeEvent<HTMLInputElement>) => setConfirmPassword(event.target.value)}
+                        onChange={handleConfirmPasswordChange}
                         error={password !== confirmPassword}
                         required
                         inputProps={InputProps}
@@ -73,7 +81,7 @@ const registerForm = () => {
                         label="email"
                         type="email"
                         value={email}
-                        onChange={(event: ChangeEvent<HTMLInputElement>) => setEmail(event.target.value)}
+                        onChange={handleEmailChange}
                         required
                     />
                     <TextField
@@ -81,7 +89,7 @@ const registerForm = () => {
                         label="role"
                         select
                         value={role}
-                        onChange={(event: ChangeEvent<HTMLInputElement>) => setRole(event.target.value as AccountRoles)}
+                        onChange={handleRoleChange}
                         required
                     >
                         <option value={AccountRoles.CUSTOMER}>Customer</option>
@@ -99,4 +107,4 @@ const registerForm = () => {
     );
 };
 
-export default registerForm;
+export default RegistrationForm;

@@ -17,10 +17,9 @@ import MatchesPage from './src/pages/matches-page';
 import ProfilePage from './src/pages/profile-page';
 import RegistrationPage from './src/pages/registration/registration-page';
 import LoginPage from './src/pages/login/login-page';
-import {
-    registrationAction,
-    loginAction
-} from './src/actions/auth-action';
+
+import loginAction from './src/actions/login-page-action';
+import registrationAction from './src/actions/registration-page-action';
 
 import ROUTES from './src/consts/routes';
 
