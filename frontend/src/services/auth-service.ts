@@ -34,7 +34,7 @@ class AuthService {
         }
     }
 
-    registration = async ({ username, password, email, role }: RegistrationData) => {
+    register = async ({ username, password, email, role }: RegistrationData) => {
         const credentials = btoa(`${username}:${password}`);
         const requestBody = {
             email,

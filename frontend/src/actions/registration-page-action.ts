@@ -10,7 +10,7 @@ const registrationAction = async ({ request }) => {
     const form = await request.formData();
     const registrationData = Object.fromEntries(form.entries()) as RegistrationData;
 
-    await new AuthService().registration(registrationData);
+    await new AuthService().register(registrationData);
 
     return redirect('/login');
 };
