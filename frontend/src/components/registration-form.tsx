@@ -3,6 +3,7 @@ import {
     TextField,
     Paper,
     Button,
+    MenuItem,
 } from '@mui/material';
 import React, {
     ChangeEvent,
@@ -11,7 +12,6 @@ import React, {
 } from 'react';
 import {
     Form,
-    useActionData
 } from 'react-router-dom';
 
 import {
@@ -90,10 +90,11 @@ const RegistrationForm = () => {
                         select
                         value={role}
                         onChange={handleRoleChange}
+                        fullWidth
                         required
                     >
-                        <option value={AccountRoles.CUSTOMER}>Customer</option>
-                        <option value={AccountRoles.SERVICE_PROVIDER}>Service Provider</option>
+                        <MenuItem value={AccountRoles.CUSTOMER}>Customer</MenuItem>
+                        <MenuItem value={AccountRoles.SERVICE_PROVIDER}>Service Provider</MenuItem>
                     </TextField>
                     <Button
                         type="submit"

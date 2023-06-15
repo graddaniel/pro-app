@@ -13,7 +13,7 @@ export const loginService = async ({ username, password }: LoginData) => {
     const credentials = btoa(`${username}:${password}`);
 
     try {
-        const response = await axios.get('http://localhost:8081/accounts/login', {
+        const response = await axios.get('http://localhost:8081/accounts', {
             headers: {
                 'Authorization': `Basic ${credentials}`
             }
@@ -32,7 +32,7 @@ export interface RegistrationData {
     role: AccountRoles;
 }
 
-export const registrationService = async ({username, password, email, role}: RegistrationData) => {
+export const registrationService = async ({ username, password, email, role }: RegistrationData) => {
     const credentials = btoa(`${username}:${password}`);
     const requestBody = {
         email,
@@ -40,7 +40,7 @@ export const registrationService = async ({username, password, email, role}: Reg
     }
 
     try {
-        const response = await axios.post('http://localhost:8081/accounts/register', requestBody , {
+        const response = await axios.post('http://localhost:8081/accounts', requestBody, {
             headers: {
                 'Authorization': `Basic ${credentials}`
             }
