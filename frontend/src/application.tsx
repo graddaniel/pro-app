@@ -1,20 +1,20 @@
 import React, {
-    useEffect,
+    useEffect
 } from 'react';
 import {
     Outlet,
     Link,
     useLocation,
-    useNavigate,
-} from 'react-router-dom'
+    useNavigate
+} from 'react-router-dom';
 import {
     BottomNavigation,
-    BottomNavigationAction,
+    BottomNavigationAction
 } from '@mui/material';
 import {
     Group,
     Map,
-    ManageAccounts
+    ManageAccounts,
 } from '@mui/icons-material';
 
 import ROUTES from './consts/routes';
