@@ -1,18 +1,14 @@
 import {
-    json,
     redirect
 } from 'react-router-dom';
 
-import {
-    LoginData,
-    loginService,
-} from '../services/auth-service';
+import AuthService, { LoginData } from '../services/auth-service';
 
 const loginAction = async ({ request }) => {
     const form = await request.formData();
     const loginData = Object.fromEntries(form.entries()) as LoginData;
-    
-    await loginService(loginData);
+
+    await new AuthService().login(loginData);
 
     return redirect('/');
 };

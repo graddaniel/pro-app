@@ -9,22 +9,6 @@ export interface LoginData {
     password: string;
 }
 
-export const loginService = async ({ username, password }: LoginData) => {
-    const credentials = btoa(`${username}:${password}`);
-
-    try {
-        const response = await axios.get('http://localhost:8081/accounts', {
-            headers: {
-                'Authorization': `Basic ${credentials}`
-            }
-        });
-
-        return response.data;
-    } catch (error) {
-        console.error(`[ACTION ERROR]: ${error}`);
-    }
-}
-
 export interface RegistrationData {
     username: string;
     password: string;
@@ -32,22 +16,43 @@ export interface RegistrationData {
     role: AccountRoles;
 }
 
-export const registrationService = async ({ username, password, email, role }: RegistrationData) => {
-    const credentials = btoa(`${username}:${password}`);
-    const requestBody = {
-        email,
-        role
+class AuthService {
+
+    login = async ({ username, password }: LoginData) => {
+        const credentials = btoa(`${username}:${password}`);
+
+        try {
+            const response = await axios.get('http://localhost:8081/accounts', {
+                headers: {
+                    'Authorization': `Basic ${credentials}`
+                }
+            });
+
+            return response.data;
+        } catch (error) {
+            console.error(`[ACTION ERROR]: ${error}`);
+        }
     }
 
-    try {
-        const response = await axios.post('http://localhost:8081/accounts', requestBody, {
-            headers: {
-                'Authorization': `Basic ${credentials}`
-            }
-        });
+    registration = async ({ username, password, email, role }: RegistrationData) => {
+        const credentials = btoa(`${username}:${password}`);
+        const requestBody = {
+            email,
+            role
+        }
 
-        return response.data;
-    } catch (error) {
-        console.error(`[ACTION ERROR]: ${error}`);
+        try {
+            const response = await axios.post('http://localhost:8081/accounts', requestBody, {
+                headers: {
+                    'Authorization': `Basic ${credentials}`
+                }
+            });
+
+            return response.data;
+        } catch (error) {
+            console.error(`[ACTION ERROR]: ${error}`);
+        }
     }
 }
+
+export default AuthService;
