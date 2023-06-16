@@ -7,8 +7,6 @@ import IncorrectPasswordError from './errors/incorrect-password-error';
 import JWTService from './jwt-service';
 import { hash } from '../utils'
 
-import type { AccountRoles } from '../generic/constants';
-
 export default class AccountsService {
     login = async (
         username: string,
@@ -32,8 +30,7 @@ export default class AccountsService {
         return JWTService.sign({
             id: account.id,
             username: account.username,
-            email: account.email,
-            role: account.role,
+            email: account.email
         });
     }
 
@@ -41,7 +38,6 @@ export default class AccountsService {
         username: string,
         password: string,
         email: string,
-        role: AccountRoles,
     ): Promise<string> => {
         const account = await AccountModel.findOne({
             where: {
@@ -59,15 +55,13 @@ export default class AccountsService {
         const newAccount = await AccountModel.create({
             username,
             passwordHash: hash(password),
-            email,
-            role,
+            email
         });
 
         return JWTService.sign({
             id: newAccount.id,
             username: newAccount.username,
-            email: newAccount.email,
-            role: newAccount.role,
+            email: newAccount.email
         });
     }
 }

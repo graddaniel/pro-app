@@ -6,7 +6,6 @@ import {
 import config from 'config';
 
 import ValidationError from './validation-error';
-import { AccountRoles } from '../../generic/constants';
 import configJson from '../../../config/default.json';
 
 type ValidationConfiguration = typeof configJson.validation;
@@ -15,20 +14,17 @@ const validationConfig = config.get('validation') as ValidationConfiguration;
 
 const newAccountSchema = object({
     username: string()
-                .required()
-                .matches(new RegExp(validationConfig.username.regexp))
-                .min(validationConfig.username.minLength)
-                .max(validationConfig.username.maxLength),
+        .required()
+        .matches(new RegExp(validationConfig.username.regexp))
+        .min(validationConfig.username.minLength)
+        .max(validationConfig.username.maxLength),
     password: string()
-                .required()
-                .min(validationConfig.password.minLength)
-                .max(validationConfig.password.maxLength),
+        .required()
+        .min(validationConfig.password.minLength)
+        .max(validationConfig.password.maxLength),
     email: string()
-            .email()
-            .required(),
-    role: string()
-            .oneOf(Object.values(AccountRoles))
-            .required(),
+        .email()
+        .required()
 });
 
 export default class AccountsValidator {

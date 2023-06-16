@@ -8,6 +8,7 @@ import {
 import config from 'config';
 
 import ValidationError from './validation-error';
+import { AccountRoles } from '../../generic/constants';
 import configJson from '../../../config/default.json';
 
 type ValidationConfiguration = typeof configJson.validation;
@@ -24,7 +25,10 @@ const newProfileSchema = object({
     description: string()
         .required()
         .min(validationConfig.description.minLength)
-        .max(validationConfig.description.maxLength)
+        .max(validationConfig.description.maxLength),
+    role: string()
+        .oneOf(Object.values(AccountRoles))
+        .required()
 });
 
 export default class ProfileValidator {

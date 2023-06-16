@@ -6,8 +6,6 @@ import {
 import SequelizeConnection from '../services/sequelize-connection';
 import ProfileModel from './profile';
 
-import { AccountRoles } from '../generic/constants';
-
 const USERNAME_MAX_LENGTH = 32;
 const PASSWORD_LENGTH = 64; //SHA256
 const EMAIL_MAX_LENGTH = 64;
@@ -17,7 +15,6 @@ export default class AccountModel extends Model {
     declare username: string;
     declare passwordHash: string;
     declare email: string;
-    declare role: AccountRoles;
 }
 
 AccountModel.init({
@@ -39,10 +36,6 @@ AccountModel.init({
         type: DataTypes.STRING(EMAIL_MAX_LENGTH),
         allowNull: false,
         unique: true,
-    },
-    role: {
-        type: DataTypes.ENUM(...Object.values(AccountRoles)),
-        allowNull: false,
     }
 }, {
     modelName: 'account',
