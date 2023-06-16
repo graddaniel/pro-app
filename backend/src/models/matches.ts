@@ -14,23 +14,7 @@ MatchModel.init({
         type: DataTypes.BIGINT.UNSIGNED,
         primaryKey: true,
         autoIncrement: true,
-    },
-    customer_profile_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: ProfileModel,
-            key: 'id'
-        }
-    },
-    professional_profile_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: ProfileModel,
-            key: 'id'
-        }
-    },
+    }
 }, {
     modelName: 'match',
     timestamps: false,
@@ -43,5 +27,5 @@ MatchModel.init({
     ]
 });
 
-MatchModel.hasOne(ProfileModel, { foreignKey: 'customer_profile_id' });
-MatchModel.hasOne(ProfileModel, { foreignKey: 'professional_profile_id' });
+ProfileModel.hasMany(MatchModel, { foreignKey: 'customer_profile_id' });
+ProfileModel.hasMany(MatchModel, { foreignKey: 'professional_profile_id' });
