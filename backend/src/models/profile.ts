@@ -5,6 +5,7 @@ import {
 
 import SequelizeConnection from '../services/sequelize-connection';
 import PhotoModel from './photo';
+import SwipeModel from './swipe';
 
 import { AccountRoles } from '../generic/constants';
 
@@ -51,3 +52,5 @@ ProfileModel.init({
 });
 
 ProfileModel.hasMany(PhotoModel, { foreignKey: 'profileId' });
+ProfileModel.hasMany(SwipeModel, { foreignKey: 'source_profile_id' });
+ProfileModel.hasMany(SwipeModel, { foreignKey: 'target_profile_id' });
