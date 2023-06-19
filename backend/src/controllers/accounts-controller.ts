@@ -41,22 +41,19 @@ export default class AccountsController {
         } = req.credentials;
 
         const {
-            email,
-            role,
+            email
         } = req.body;
-        
+
         await AccountsValidator.validateNewAccount({
             username,
             password,
-            email,
-            role,
+            email
         });
 
         const jwtToken = await this.accountsService.register(
             username,
             password,
-            email,
-            role,
+            email
         );
 
         res.status(StatusCodes.OK).send(jwtToken);

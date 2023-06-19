@@ -1,9 +1,5 @@
 import axios from 'axios';
 
-import {
-    AccountRoles
-} from '../consts/constants';
-
 export interface LoginData {
     username: string;
     password: string;
@@ -13,7 +9,6 @@ export interface RegistrationData {
     username: string;
     password: string;
     email: string;
-    role: AccountRoles;
 }
 
 class AuthService {
@@ -34,11 +29,10 @@ class AuthService {
         }
     }
 
-    register = async ({ username, password, email, role }: RegistrationData) => {
+    register = async ({ username, password, email }: RegistrationData) => {
         const credentials = btoa(`${username}:${password}`);
         const requestBody = {
-            email,
-            role
+            email
         }
 
         try {

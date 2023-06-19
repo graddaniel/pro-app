@@ -1,5 +1,4 @@
 import type { Request as ExpressRequest } from 'express';
-import type { AccountRoles } from '../generic/constants';
 
 export type AuthenticationRequest = {
     credentials: {
@@ -11,8 +10,7 @@ export type AuthenticationRequest = {
 export type JWTUserInfo = {
     id: number,
     username: string,
-    email: string,
-    role: AccountRoles,
+    email: string
 }
 
 export type AuthenticatedRequest = {

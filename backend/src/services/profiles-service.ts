@@ -21,6 +21,7 @@ export default class ProfilesService {
         name: string,
         age: number,
         description: string,
+        role: string
     ): Promise<void> => {
         const foundProfile = await ProfileModel.findOne({
             where: {
@@ -36,6 +37,7 @@ export default class ProfilesService {
             name,
             age,
             description,
+            role
         });
     }
 }

@@ -47,19 +47,21 @@ export default class ProfilesController {
             id: accountId
         } = req.currentUser;
 
-        const { name, age, description } = req.body;
+        const { name, age, description, role } = req.body;
 
         await ProfileValidator.validateNewProfile({
             name,
             age,
-            description
+            description,
+            role
         });
 
         await this.profilesService.createProfile(
             accountId,
             name,
             age,
-            description
+            description,
+            role
         );
 
         res.status(StatusCodes.OK).send();

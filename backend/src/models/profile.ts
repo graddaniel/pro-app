@@ -2,9 +2,11 @@ import {
     DataTypes,
     Model
 } from 'sequelize';
-import SequelizeConnection from '../services/sequelize-connection';
 
+import SequelizeConnection from '../services/sequelize-connection';
 import PhotoModel from './photo';
+
+import { AccountRoles } from '../generic/constants';
 
 const DESCRIPTION_MAX_LENGTH = 256;
 const NAME_MAX_LENGTH = 32;
@@ -12,6 +14,7 @@ const NAME_MAX_LENGTH = 32;
 export default class ProfileModel extends Model {
     declare id: number;
     declare description: string;
+    declare role: AccountRoles;
     name: string;
     age: number;
 }
@@ -25,6 +28,10 @@ ProfileModel.init({
     description: {
         type: DataTypes.STRING(DESCRIPTION_MAX_LENGTH),
     },
+    role: {
+        type: DataTypes.ENUM(...Object.values(AccountRoles)),
+        allowNull: false,
+    },
     name: {
         type: DataTypes.STRING(NAME_MAX_LENGTH),
         allowNull: false,
@@ -32,7 +39,7 @@ ProfileModel.init({
     age: {
         type: DataTypes.INTEGER,
         allowNull: false,
-    },
+    }
     // address: {}
     // services
     // price min

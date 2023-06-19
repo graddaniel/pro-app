@@ -2,8 +2,7 @@ import {
     FormGroup,
     TextField,
     Paper,
-    Button,
-    MenuItem,
+    Button
 } from '@mui/material';
 import React, {
     ChangeEvent,
@@ -13,10 +12,6 @@ import React, {
 import {
     Form,
 } from 'react-router-dom';
-
-import {
-    AccountRoles
-} from '../consts/constants';
 
 import classes from './registration-form.module.css';
 
@@ -30,13 +25,11 @@ const RegistrationForm = () => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [email, setEmail] = useState('');
-    const [role, setRole] = useState(AccountRoles.CUSTOMER);
 
     const handleUsernameChange = useCallback((event: ChangeEvent<HTMLInputElement>) => setUsername(event.target.value), []);
     const handlePasswordChange = useCallback((event: ChangeEvent<HTMLInputElement>) => setPassword(event.target.value), []);
     const handleConfirmPasswordChange = useCallback((event: ChangeEvent<HTMLInputElement>) => setConfirmPassword(event.target.value), []);
     const handleEmailChange = useCallback((event: ChangeEvent<HTMLInputElement>) => setEmail(event.target.value), []);
-    const handleRoleChange = useCallback((event: ChangeEvent<HTMLInputElement>) => setRole(event.target.value as AccountRoles), []);
         
     return (
         <Paper
@@ -84,18 +77,6 @@ const RegistrationForm = () => {
                         onChange={handleEmailChange}
                         required
                     />
-                    <TextField
-                        name="role"
-                        label="role"
-                        select
-                        value={role}
-                        onChange={handleRoleChange}
-                        fullWidth
-                        required
-                    >
-                        <MenuItem value={AccountRoles.CUSTOMER}>Customer</MenuItem>
-                        <MenuItem value={AccountRoles.SERVICE_PROVIDER}>Service Provider</MenuItem>
-                    </TextField>
                     <Button
                         type="submit"
                         variant="contained"
