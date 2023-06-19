@@ -2,8 +2,8 @@ import {
     DataTypes,
     Model
 } from 'sequelize';
+
 import SequelizeConnection from '../services/sequelize-connection';
-import ProfileModel from './profile';
 
 export default class MatchModel extends Model {
     declare id: number;
@@ -26,6 +26,3 @@ MatchModel.init({
         }
     ]
 });
-
-ProfileModel.hasMany(MatchModel, { foreignKey: 'customer_profile_id' });
-ProfileModel.hasMany(MatchModel, { foreignKey: 'professional_profile_id' });
