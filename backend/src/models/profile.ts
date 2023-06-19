@@ -5,6 +5,7 @@ import {
 import SequelizeConnection from '../services/sequelize-connection';
 
 import PhotoModel from './photo';
+import SwipeModel from './swipe';
 
 const DESCRIPTION_MAX_LENGTH = 256;
 const NAME_MAX_LENGTH = 32;
@@ -44,3 +45,5 @@ ProfileModel.init({
 });
 
 ProfileModel.hasMany(PhotoModel, { foreignKey: 'profileId' });
+ProfileModel.hasMany(SwipeModel, { foreignKey: 'source_profile_id' });
+ProfileModel.hasMany(SwipeModel, { foreignKey: 'target_profile_id' });
