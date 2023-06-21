@@ -53,15 +53,14 @@ export default class Appplication {
         profilesRouter.get('/', requireJWT, profilesController.getProfiles);
         profilesRouter.post('/', requireJWT, profilesController.postProfiles);
         profilesRouter.get('/ofAccount', requireJWT, profilesController.getProfileByAccountId);
-        
+
         const photosRouter = express.Router();
         photosRouter.post('/',
-            upload.array('photos',
-            photosConfig.maxCount),
+            upload.array('photos', photosConfig.maxCount),
             requireJWT,
             photosController.postPhotos
         );
-        profilesRouter.use('/photos', photosRouter); 
+        profilesRouter.use('/photos', photosRouter);
 
         this.app.use('/profiles', profilesRouter);
 

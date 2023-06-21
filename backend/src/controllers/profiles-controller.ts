@@ -19,7 +19,13 @@ export default class ProfilesController {
         req: AuthenticatedRequest,
         res: Response
     ): Promise<void> => {
-        const profiles = await this.profilesService.getProfiles();
+        const {
+            id: accountId,
+        } = req.currentUser;
+
+        const profiles = await this.profilesService.getProfiles(
+            accountId
+        );
 
         res.status(StatusCodes.OK).send(profiles);
     };
