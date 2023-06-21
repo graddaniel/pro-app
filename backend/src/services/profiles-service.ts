@@ -5,7 +5,7 @@ import SwipeModel from '../models/swipe';
 
 import ProfileAlreadyExists from './errors/profile-already-exists-error';
 import ProfileNotFound from './errors/profile-not-found-error';
-import UnexpectedProfileError from './errors/unexpected-profile-error';
+import UnexpectedRoleError from './errors/unexpected-role-error';
 
 export default class ProfilesService {
     getProfiles = async (
@@ -26,7 +26,7 @@ export default class ProfilesService {
                 searchedRole = AccountRoles.CUSTOMER;
                 break;
             default:
-                throw new UnexpectedProfileError(accountProfile);
+                throw new UnexpectedRoleError(role);
         }
 
         const profiles = await ProfileModel.findAll({
