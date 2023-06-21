@@ -19,7 +19,13 @@ export default class ProfilesController {
         req: AuthenticatedRequest,
         res: Response
     ): Promise<void> => {
-        const profiles = await this.profilesService.getProfiles();
+        const {
+            id: accountId,
+        } = req.currentUser;
+
+        const profiles = await this.profilesService.getProfiles(
+            accountId
+        );
 
         res.status(StatusCodes.OK).send(profiles);
     };
@@ -37,21 +43,6 @@ export default class ProfilesController {
         );
 
         res.status(StatusCodes.OK).send(profile);
-    };
-
-    getProfilesToSwap = async (
-        req: AuthenticatedRequest,
-        res: Response
-    ): Promise<void> => {
-        const {
-            id: accountId,
-        } = req.currentUser;
-
-        const profilesToSwap = await this.profilesService.getProfilesToSwap(
-            accountId
-        );
-
-        res.status(StatusCodes.OK).send(profilesToSwap);
     };
 
     postProfiles = async (

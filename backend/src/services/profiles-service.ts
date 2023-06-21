@@ -2,39 +2,32 @@ import { Op, col, or } from 'sequelize';
 import { AccountRoles } from '../generic/constants';
 import ProfileModel from '../models/profile';
 import SwipeModel from '../models/swipe';
+
 import ProfileAlreadyExists from './errors/profile-already-exists-error';
 import ProfileNotFound from './errors/profile-not-found-error';
+import UnexpectedProfileError from './errors/unexpected-profile-error';
 
 export default class ProfilesService {
-    getProfiles = async (): Promise<ProfileModel[]> => {
-        return ProfileModel.findAll({});
-    }
-
-
-    getProfileByAccountId = async (
-        accountId: number
-    ): Promise<ProfileModel> => {
-        const profile = await ProfileModel.findOne({
-            where: {
-                accountId,
-            }
-        });
-
-        if (!profile) {
-            throw new ProfileNotFound();
-        }
-
-        return profile;
-    }
-
-    getProfilesToSwap = async (
+    getProfiles = async (
         accountId: number
     ): Promise<ProfileModel[]> => {
-        const getUserProfile = await this.getProfileByAccountId(accountId);
+        const accountProfile = await this.getProfileByAccountId(accountId);
         const {
             id: profileId,
             role
-        } = getUserProfile;
+        } = accountProfile;
+
+        let searchedRole: AccountRoles | null = null
+        switch (role) {
+            case AccountRoles.CUSTOMER:
+                searchedRole = AccountRoles.PROFESSIONAL;
+                break;
+            case AccountRoles.PROFESSIONAL:
+                searchedRole = AccountRoles.CUSTOMER;
+                break;
+            default:
+                throw new UnexpectedProfileError(accountProfile);
+        }
 
         const profiles = await ProfileModel.findAll({
             attributes: ['id', 'name', 'age', 'description'],
@@ -48,7 +41,7 @@ export default class ProfilesService {
             }],
             where: {
                 [Op.and]: {
-                    role: role === AccountRoles.CUSTOMER ? AccountRoles.PROFESSIONAL : AccountRoles.CUSTOMER,
+                    role: searchedRole,
                     [Op.or]: [
                         {
                             '$swipes.target_profile_id$': null
@@ -63,6 +56,23 @@ export default class ProfilesService {
         });
 
         return profiles;
+    }
+
+
+    getProfileByAccountId = async (
+        accountId: number
+    ): Promise<ProfileModel> => {
+        const profile = await ProfileModel.findOne({
+            where: {
+                accountId,
+            }
+        });
+
+        if (!profile) {
+            throw new ProfileNotFound(accountId);
+        }
+
+        return profile;
     }
 
     createProfile = async (

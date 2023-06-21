@@ -1,3 +1,4 @@
+-- Password : password
 INSERT INTO accounts (username, passwordHash, email)
 VALUES
     ('username1', 'f3f22d82ccf54a92cfc584d9f1531cbf29b11b513f7f68a20a2fa707f3450220', 'user1@example.com'),
