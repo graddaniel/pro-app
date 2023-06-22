@@ -12,6 +12,7 @@ import ProfileAlreadyExists from './errors/profile-already-exists-error';
 import ProfileNotFound from './errors/profile-not-found-error';
 import UnexpectedRoleError from './errors/unexpected-role-error';
 import SameRoleError from './errors/same-role-error';
+import MatchModel from '../models/matches';
 
 export default class ProfilesService {
     getProfiles = async (
@@ -23,7 +24,7 @@ export default class ProfilesService {
             role
         } = accountProfile;
 
-        let searchedRole: AccountRoles | null = null
+        let searchedRole: AccountRoles | null = null;
         switch (role) {
             case AccountRoles.CUSTOMER:
                 searchedRole = AccountRoles.PROFESSIONAL;
@@ -55,7 +56,6 @@ export default class ProfilesService {
                             }
                         }
                     ]
-
                 },
                 required: false
             }],
@@ -75,7 +75,26 @@ export default class ProfilesService {
             }
         });
 
-        return profiles;
+        const existsMatches = await ProfileModel.findAll({
+            attributes: ['id'],
+            include: [{
+                model: MatchModel,
+                attributes: [],
+                on: role === AccountRoles.CUSTOMER ? {
+                    customer_profile_id: { [Op.eq]: profileId },
+                    professional_profile_id: { [Op.eq]: col('profile.id') }
+                } : {
+                    professional_profile_id: { [Op.eq]: profileId },
+                    customer_profile_id: { [Op.eq]: col('profile.id') }
+                },
+                required: true
+            }],
+            where: {
+                role: searchedRole
+            }
+        })
+
+        return profiles.filter(profile => !existsMatches.find(match => match.id === profile.id));
     }
 
 
