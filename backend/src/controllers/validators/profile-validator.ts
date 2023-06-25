@@ -2,7 +2,6 @@ import {
     number,
     object,
     string,
-    boolean,
     ValidationError as YupValidationError
 } from 'yup';
 
@@ -32,25 +31,12 @@ const newProfileSchema = object({
         .required()
 });
 
-const swapProfileSchema = object({
-    id: number().required(),
-    accepted: boolean().required()
-});
-
 export default class ProfileValidator {
     static async validateNewProfile(newProfile) {
         try {
             return await newProfileSchema.validate(newProfile);
         } catch (error) {
             //TODO log original error
-            console.log('VALIDATION', error);
-            throw new ValidationError((error as YupValidationError).errors[0]);
-        }
-    }
-    static async validateSwapProfile(swapProfile) {
-        try {
-            return await swapProfileSchema.validate(swapProfile);
-        } catch (error) {
             console.log('VALIDATION', error);
             throw new ValidationError((error as YupValidationError).errors[0]);
         }

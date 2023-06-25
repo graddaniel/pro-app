@@ -50,9 +50,9 @@ export default class Appplication {
         this.app.use('/accounts', accountsRouter);
 
         const profilesRouter = express.Router();
-        profilesRouter.get('/', requireJWT, profilesController.getProfiles);
+        profilesRouter.get('/', requireJWT, profilesController.getProfilesToSwipe);
         profilesRouter.post('/', requireJWT, profilesController.postProfiles);
-        profilesRouter.post('/swipe', requireJWT, profilesController.postProfileSwipe);
+        profilesRouter.post('/swipe', requireJWT, profilesController.swipeProfile);
         profilesRouter.get('/ofAccount', requireJWT, profilesController.getProfileByAccountId);
 
         const photosRouter = express.Router();

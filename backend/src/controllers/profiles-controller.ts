@@ -6,6 +6,7 @@ import { DECIMAL_RADIX } from '../generic/constants';
 import type { AuthenticatedRequest } from '../generic/types';
 import type ProfilesService from '../services/profiles-service';
 import ProfileValidator from './validators/profile-validator';
+import SwipeValidator from './validators/swipe-validator';
 
 export default class ProfilesController {
     private profilesService: ProfilesService;
@@ -14,7 +15,7 @@ export default class ProfilesController {
         this.profilesService = profilesService;
     }
 
-    getProfiles = async (
+    getProfilesToSwipe = async (
         req: AuthenticatedRequest,
         res: Response
     ): Promise<void> => {
@@ -22,7 +23,7 @@ export default class ProfilesController {
             id: accountId,
         } = req.currentUser;
 
-        const profiles = await this.profilesService.getProfiles(
+        const profiles = await this.profilesService.getProfilesToSwipe(
             accountId
         );
 
@@ -72,7 +73,7 @@ export default class ProfilesController {
         res.status(StatusCodes.OK).send();
     };
 
-    postProfileSwipe = async (
+    swipeProfile = async (
         req: AuthenticatedRequest,
         res: Response
     ): Promise<void> => {
@@ -85,7 +86,7 @@ export default class ProfilesController {
             accepted
         } = req.body;
 
-        await ProfileValidator.validateSwapProfile({
+        await SwipeValidator.validateNewSwipe({
             id: profileToSwipeId,
             accepted
         });

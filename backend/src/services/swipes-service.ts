@@ -1,7 +1,10 @@
+
+import { Transaction } from "sequelize";
 import SwipeModel from "../models/swipe";
-import { Swipe } from "../generic/types";
 import SwipeAlreadyExistsError from "./errors/swipe-already-exists-error";
-import NotAcceptedSwipeError from "./errors/not-accepted-swipe-error";
+import SequelizeConnection from "./sequelize-connection";
+
+export type Swipe = Pick<SwipeModel, 'source_profile_id' | 'target_profile_id' | 'accepted'>;
 
 export default class SwipesService {
     public static createSwipe = async (
@@ -9,7 +12,7 @@ export default class SwipesService {
     ): Promise<void> => {
         const { source_profile_id, target_profile_id, accepted } = swipe;
 
-        await this.checkIsSwipeNotExists(source_profile_id, target_profile_id);
+        await this.checkSwipeNotExists(source_profile_id, target_profile_id);
 
         await SwipeModel.create({
             source_profile_id,
@@ -18,7 +21,7 @@ export default class SwipesService {
         });
     }
 
-    private static checkIsSwipeNotExists = async (
+    private static checkSwipeNotExists = async (
         source_profile_id: number,
         target_profile_id: number
     ): Promise<void> => {
@@ -50,20 +53,22 @@ export default class SwipesService {
 
     public static deleteMirrorSwipes = async (
         firstProfileId: number,
-        secondProfileId: number
+        secondProfileId: number,
     ): Promise<void> => {
-        await SwipeModel.destroy({
-            where: {
-                source_profile_id: firstProfileId,
-                target_profile_id: secondProfileId,
-            }
-        });
+        SequelizeConnection.transaction()(async () => {
+            await SwipeModel.destroy({
+                where: {
+                    source_profile_id: firstProfileId,
+                    target_profile_id: secondProfileId
+                }
+            });
 
-        await SwipeModel.destroy({
-            where: {
-                source_profile_id: secondProfileId,
-                target_profile_id: firstProfileId,
-            }
+            await SwipeModel.destroy({
+                where: {
+                    source_profile_id: secondProfileId,
+                    target_profile_id: firstProfileId
+                }
+            });
         });
     }
 }
