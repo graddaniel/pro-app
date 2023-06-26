@@ -157,7 +157,7 @@ export default class ProfilesService {
         });
     }
 
-    swipeProfile = async (
+    swipeProfile = SequelizeConnection.transaction(async (
         accountId: number,
         profileToSwipeId: number,
         accepted: boolean
@@ -169,43 +169,41 @@ export default class ProfilesService {
             throw new SameRoleError(profile.id, profileToSwipeId);
         }
 
-        SequelizeConnection.transaction()(async () => {
-            await SwipesService.createSwipe({
-                source_profile_id: profile.id,
-                target_profile_id: profileToSwipeId,
-                accepted
-            });
-
-            if (!accepted) {
-                return;
-            };
-
-            const oppositeSwipe = await SwipesService.getSwipe(profileToSwipeId, profile.id);
-            if (!oppositeSwipe || !oppositeSwipe.accepted) {
-                return;
-            };
-
-            let match: Match | null = null;
-            switch (profile.role) {
-                case AccountRoles.CUSTOMER:
-                    match = {
-                        customer_profile_id: profile.id,
-                        professional_profile_id: profileToSwipeId
-                    };
-                    break;
-
-                case AccountRoles.PROFESSIONAL:
-                    match = {
-                        customer_profile_id: profileToSwipeId,
-                        professional_profile_id: profile.id
-                    };
-                    break;
-
-                default:
-                    throw new UnexpectedRoleError(profile.role);
-            }
-
-            await MatchesService.createMatch(match);
+        await SwipesService.createSwipe({
+            source_profile_id: profile.id,
+            target_profile_id: profileToSwipeId,
+            accepted
         });
-    }
+
+        if (!accepted) {
+            return;
+        };
+
+        const oppositeSwipe = await SwipesService.getSwipe(profileToSwipeId, profile.id);
+        if (!oppositeSwipe || !oppositeSwipe.accepted) {
+            return;
+        };
+
+        let match: Match | null = null;
+        switch (profile.role) {
+            case AccountRoles.CUSTOMER:
+                match = {
+                    customer_profile_id: profile.id,
+                    professional_profile_id: profileToSwipeId
+                };
+                break;
+
+            case AccountRoles.PROFESSIONAL:
+                match = {
+                    customer_profile_id: profileToSwipeId,
+                    professional_profile_id: profile.id
+                };
+                break;
+
+            default:
+                throw new UnexpectedRoleError(profile.role);
+        }
+
+        await MatchesService.createMatch(match);
+    });
 }

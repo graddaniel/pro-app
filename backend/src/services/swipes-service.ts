@@ -10,15 +10,11 @@ export default class SwipesService {
     public static createSwipe = async (
         swipe: Swipe
     ): Promise<void> => {
-        const { source_profile_id, target_profile_id, accepted } = swipe;
+        const { source_profile_id, target_profile_id } = swipe;
 
         await this.checkSwipeNotExists(source_profile_id, target_profile_id);
 
-        await SwipeModel.create({
-            source_profile_id,
-            target_profile_id,
-            accepted
-        });
+        await SwipeModel.create(swipe);
     }
 
     private static checkSwipeNotExists = async (
@@ -51,24 +47,23 @@ export default class SwipesService {
         return swipe;
     }
 
-    public static deleteMirrorSwipes = async (
+    public static deleteMirrorSwipes = SequelizeConnection.transaction(async (
         firstProfileId: number,
         secondProfileId: number,
-    ): Promise<void> => {
-        SequelizeConnection.transaction()(async () => {
-            await SwipeModel.destroy({
-                where: {
-                    source_profile_id: firstProfileId,
-                    target_profile_id: secondProfileId
-                }
-            });
+    ): Promise<any> => {
 
-            await SwipeModel.destroy({
-                where: {
-                    source_profile_id: secondProfileId,
-                    target_profile_id: firstProfileId
-                }
-            });
+        await SwipeModel.destroy({
+            where: {
+                source_profile_id: firstProfileId,
+                target_profile_id: secondProfileId
+            }
         });
-    }
+
+        await SwipeModel.destroy({
+            where: {
+                source_profile_id: secondProfileId,
+                target_profile_id: firstProfileId
+            }
+        });
+    });
 }
