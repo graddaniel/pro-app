@@ -50,7 +50,7 @@ export default class SwipesService {
     public static deleteMirrorSwipes = SequelizeConnection.transaction(async (
         firstProfileId: number,
         secondProfileId: number,
-    ): Promise<any> => {
+    ): Promise<void> => {
 
         await SwipeModel.destroy({
             where: {

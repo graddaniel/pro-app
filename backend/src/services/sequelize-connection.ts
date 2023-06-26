@@ -36,10 +36,12 @@ export default class SequelizeConnection {
         return SequelizeConnection._sequelize;
     }
 
-    static transaction = (operation) =>
-        async function (...args) {
+    static transaction = <T, A extends any[]>(operation: (...args: A) => Promise<T>) =>
+        async function (...args: A): Promise<T> {
             return namespace.get('transaction')
-                ? operation.apply(null, args)
-                : SequelizeConnection._sequelize.transaction(operation.bind(null, ...args));
+                ? operation(...args)
+                : SequelizeConnection._sequelize.transaction(
+                    operation.bind(null, ...args)
+                );
         }
 }
