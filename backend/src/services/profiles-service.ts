@@ -165,9 +165,11 @@ export default class ProfilesService {
         const profile = await this.getProfileByAccountId(accountId);
         const profileToSwipe = await this.getProfileById(profileToSwipeId);
 
+        await MatchesService.checkMatchNotExist(profile.id, profileToSwipeId);
         if (profile.role === profileToSwipe.role) {
             throw new SameRoleError(profile.id, profileToSwipeId);
         }
+
 
         await SwipesService.createSwipe({
             source_profile_id: profile.id,

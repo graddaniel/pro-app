@@ -1,5 +1,4 @@
 
-import { Transaction } from "sequelize";
 import SwipeModel from "../models/swipe";
 import SwipeAlreadyExistsError from "./errors/swipe-already-exists-error";
 import SequelizeConnection from "./sequelize-connection";
@@ -51,6 +50,7 @@ export default class SwipesService {
         firstProfileId: number,
         secondProfileId: number,
     ): Promise<void> => {
+        throw new Error('Not implemented');
 
         await SwipeModel.destroy({
             where: {
