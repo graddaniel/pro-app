@@ -1,57 +1,46 @@
 
 import SwipeModel from "../models/swipe";
-import SwipeAlreadyExistsError from "./errors/swipe-already-exists-error";
+import SwipeAlreadyExists from "./errors/swipe-already-exists-error";
 import SequelizeConnection from "./sequelize-connection";
 
 export type Swipe = Pick<SwipeModel, 'source_profile_id' | 'target_profile_id' | 'accepted'>;
 
 export default class SwipesService {
-    public static createSwipe = async (
+    static createSwipe = async (
         swipe: Swipe
     ): Promise<void> => {
         const { source_profile_id, target_profile_id } = swipe;
 
-        await this.checkSwipeNotExists(source_profile_id, target_profile_id);
+        if (await this.checkSwipeExists(source_profile_id, target_profile_id)) {
+            throw new SwipeAlreadyExists();
+        }
 
         await SwipeModel.create(swipe);
     }
 
-    private static checkSwipeNotExists = async (
-        source_profile_id: number,
-        target_profile_id: number
-    ): Promise<void> => {
-        const swipeExists = await SwipeModel.findOne({
-            where: {
-                source_profile_id,
-                target_profile_id
-            }
-        });
-
-        if (swipeExists) {
-            throw new SwipeAlreadyExistsError();
-        }
-    }
-
-    public static getSwipe = async (
+    static getSwipe = async (
         source_profile_id: number,
         target_profile_id: number
     ): Promise<Swipe | null> => {
-        const swipe = await SwipeModel.findOne({
+        return await SwipeModel.findOne({
             where: {
                 source_profile_id,
                 target_profile_id
             }
         });
-
-        return swipe;
     }
 
-    public static deleteMirrorSwipes = SequelizeConnection.transaction(async (
+    static checkSwipeExists = async (
+        source_profile_id: number,
+        target_profile_id: number
+    ): Promise<boolean> => {
+        return await this.getSwipe(source_profile_id, target_profile_id) ? true : false;
+    }
+
+    static deleteMirrorSwipes = SequelizeConnection.transaction(async (
         firstProfileId: number,
         secondProfileId: number,
     ): Promise<void> => {
-        throw new Error('Not implemented');
-
         await SwipeModel.destroy({
             where: {
                 source_profile_id: firstProfileId,

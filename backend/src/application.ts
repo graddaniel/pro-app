@@ -3,6 +3,7 @@ import 'express-async-errors';
 import config from 'config';
 import bodyParser from 'body-parser';
 import multer from 'multer';
+import cors from 'cors';
 
 import AccountsController from './controllers/accounts-controller';
 import ProfilesController from './controllers/profiles-controller';
@@ -40,6 +41,7 @@ export default class Appplication {
         this.app = express();
 
         this.app.use(bodyParser.json());
+        this.app.use(cors());
 
         const photosConfig = config.get('photos') as PhotosConfig;
         const upload = multer({ dest: photosConfig.directory });

@@ -1,10 +1,10 @@
 import BussinessLogicError from '../../generic/business-logic-error';
 
-export default class MatchAlreadyExistsError extends BussinessLogicError {
+export default class MatchAlreadyExists extends BussinessLogicError {
     constructor(
         firstId: number,
         secondId: number,
     ) {
-        super(`Match already exists. First id: ${firstId}, second id: ${secondId}`);
+        super(`Match already exists for Ids ${firstId} and ${secondId}`);
     }
 }

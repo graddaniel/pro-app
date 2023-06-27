@@ -2,6 +2,7 @@ import { Op, col } from 'sequelize';
 
 import SwipesService from './swipes-service';
 import MatchesService, { Match } from './matches-service';
+import SequelizeConnection from './sequelize-connection';
 
 import { AccountRoles } from '../generic/constants';
 import ProfileModel from '../models/profile';
@@ -11,8 +12,8 @@ import ProfileAlreadyExists from './errors/profile-already-exists-error';
 import ProfileNotFound from './errors/profile-not-found-error';
 import UnexpectedRoleError from './errors/unexpected-role-error';
 import SameRoleError from './errors/same-role-error';
+import MatchAlreadyExists from './errors/match-already-exists-error';
 import MatchModel from '../models/matches';
-import SequelizeConnection from './sequelize-connection';
 
 export default class ProfilesService {
     getProfilesToSwipe = async (
@@ -165,9 +166,12 @@ export default class ProfilesService {
         const profile = await this.getProfileByAccountId(accountId);
         const profileToSwipe = await this.getProfileById(profileToSwipeId);
 
-        await MatchesService.checkMatchNotExist(profile.id, profileToSwipeId);
+        if (await MatchesService.checkMatchExist(profile.id, profileToSwipeId)) {
+            throw new MatchAlreadyExists(profile.id, profileToSwipeId);
+        }
+
         if (profile.role === profileToSwipe.role) {
-            throw new SameRoleError(profile.id, profileToSwipeId);
+            throw new SameRoleError(profileToSwipeId);
         }
 
 
