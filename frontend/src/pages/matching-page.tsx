@@ -3,16 +3,20 @@ import React, {
     useCallback,
     useRef,
 } from 'react';
+import type { MouseEvent } from 'react';
+import { useLoaderData } from 'react-router-dom';
 
 import classes from './matching-page.module.css';
+import { Profile } from '../services/profiles-service';
+import ProfileCard from '../components/profile-card';
 
-import type { MouseEvent } from 'react';
 
 const MatchingPage = () => {
     const [swiping, setSwiping] = useState(false);
     const [swipeStartXCoord, setSwipeStartXCoord] = useState(0);
     const [swipeXOffset, setSwipeXOffset] = useState(0);
     const profileElement = useRef<HTMLElement>(null);
+    const profiles = useLoaderData() as Profile[];
 
     const startSwiping = useCallback((event: MouseEvent) => {
         setSwiping(true);
@@ -59,7 +63,7 @@ const MatchingPage = () => {
                 onMouseMove={handleMouseMove}
                 onMouseOut={stopSwiping}
             >
-
+                <ProfileCard profile={profiles[0]} />
             </section>
         </article>
     );

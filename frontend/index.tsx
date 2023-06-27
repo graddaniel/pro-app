@@ -22,6 +22,7 @@ import loginAction from './src/actions/login-page-action';
 import registrationAction from './src/actions/registration-page-action';
 
 import ROUTES from './src/consts/routes';
+import profilesLoader from './src/loaders/matching-page-loader';
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -32,6 +33,7 @@ const router = createBrowserRouter(
             <Route
                 path={ROUTES.MATCHING_PAGE.PATH}
                 element={<MatchingPage />}
+                loader={profilesLoader}
             />
             <Route
                 path={ROUTES.MATCHES_PAGE.PATH}
