@@ -51,7 +51,6 @@ const MatchingPage = () => {
 
     return (
         <article className={classes.container}>
-            MATCHING
             <section
                 style={{
                     left: `${swipeXOffset}px`,
