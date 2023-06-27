@@ -23,6 +23,29 @@ class ProfilesService {
             console.error(`[LOADER ERROR]: ${error}`);
         }
     }
+
+    static swipeProfile = async (
+        profileId: number,
+        accepted: boolean
+    ): Promise<void> => {
+        const token = `Bearer ${localStorage.getItem('token')}`;
+        try {
+            const response = await axios.post(`http://localhost:8081/profiles/swipe`, {
+                profileId,
+                accepted
+            }, {
+                headers: {
+                    'Authorization': token
+                }
+            });
+
+            if (response.status !== 201) {
+                throw new Error('Error swiping profile');
+            }
+        } catch (error) {
+            throw Error(`[ACTION ERROR]: ${error}`);
+        }
+    }
 }
 
 export default ProfilesService;

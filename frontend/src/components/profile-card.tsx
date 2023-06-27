@@ -12,6 +12,7 @@ interface ProfileCardProps {
 const ProfileCard = ({ profile }: ProfileCardProps) => {
     return (
         <Box className={classes.profileCard}>
+            <Box className={classes.profileCard__overlay} />
             <Box>
                 <img
                     className={classes.profileCard__image}

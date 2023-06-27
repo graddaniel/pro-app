@@ -1,53 +1,49 @@
 import React, {
     useState,
-    useCallback,
-    useRef,
 } from 'react';
-import type { MouseEvent } from 'react';
+
 import { useLoaderData } from 'react-router-dom';
 
 import classes from './matching-page.module.css';
-import { Profile } from '../services/profiles-service';
+import ProfilesService, { Profile } from '../services/profiles-service';
 import ProfileCard from '../components/profile-card';
+
+import useSwipe from '../hooks/useSwipe';
 
 
 const MatchingPage = () => {
-    const [swiping, setSwiping] = useState(false);
-    const [swipeStartXCoord, setSwipeStartXCoord] = useState(0);
-    const [swipeXOffset, setSwipeXOffset] = useState(0);
-    const profileElement = useRef<HTMLElement>(null);
-    const profiles = useLoaderData() as Profile[];
+    const {
+        swipeXOffset,
+        profileElement,
+        startSwiping,
+        stopSwiping,
+        handleMouseMove
+    } = useSwipe();
 
-    const startSwiping = useCallback((event: MouseEvent) => {
-        setSwiping(true);
-        setSwipeStartXCoord(event.clientX)
-    }, []);
+    const [profiles, setProfiles] = useState<Profile[]>(useLoaderData() as Profile[]);
 
-    const stopSwiping = useCallback(() => {
-        if (!profileElement.current) {
-            console.log("No element found")
+    const handleStopSwiping = async () => {
+        const accepted = stopSwiping();
+        if (accepted === undefined) {
             return;
         }
 
-        const elementsWidth = profileElement.current.clientWidth;
-        console.log(elementsWidth, elementsWidth/2, swipeXOffset)
-        if (Math.abs(swipeXOffset) > elementsWidth / 2) {
-            console.log("swiped")
-        } else {
-            console.log("not swiped")
+        try {
+            await ProfilesService.swipeProfile(profiles[0].id, accepted);
+            await loadNewProfile();
+        } catch (error) {
+            console.error(error);
         }
-        
-        setSwiping(false);
-        setSwipeXOffset(0);
-    }, [swipeXOffset]);
+    }
 
-    const handleMouseMove = useCallback((event: MouseEvent) => {
-        if (swiping) {
-            const mouseXPosition = event.clientX;
-            
-            setSwipeXOffset(mouseXPosition - swipeStartXCoord);
+    const loadNewProfile = async () => {
+        if (profiles.length === 1) {
+            const newProfiles = await ProfilesService.getProfiles() || [];
+            setProfiles(newProfiles);
+        } else {
+            setProfiles((prevProfiles) => prevProfiles.slice(1));
         }
-    }, [swiping]);
+    }
 
     return (
         <article className={classes.container}>
@@ -58,9 +54,9 @@ const MatchingPage = () => {
                 ref={profileElement}
                 className={classes.profile}
                 onMouseDown={startSwiping}
-                onMouseUp={stopSwiping}
+                onMouseUp={handleStopSwiping}
                 onMouseMove={handleMouseMove}
-                onMouseOut={stopSwiping}
+                onMouseOut={handleStopSwiping}
             >
                 <ProfileCard profile={profiles[0]} />
             </section>
