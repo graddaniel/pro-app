@@ -1,6 +1,6 @@
 import BussinessLogicError from '../../generic/business-logic-error';
 
-export default class MatchAlreadyExists extends BussinessLogicError {
+export default class MatchAlreadyExistsError extends BussinessLogicError {
     constructor(
         firstId: number,
         secondId: number,

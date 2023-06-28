@@ -7,15 +7,26 @@ import SequelizeConnection from './sequelize-connection';
 import { AccountRoles } from '../generic/constants';
 import ProfileModel from '../models/profile';
 import SwipeModel from '../models/swipe';
-
-import ProfileAlreadyExists from './errors/profile-already-exists-error';
-import ProfileNotFound from './errors/profile-not-found-error';
-import UnexpectedRoleError from './errors/unexpected-role-error';
-import SameRoleError from './errors/same-role-error';
-import MatchAlreadyExists from './errors/match-already-exists-error';
 import MatchModel from '../models/matches';
 
+import ProfileAlreadyExistsError from './errors/profile-already-exists-error';
+import ProfileNotFoundError from './errors/profile-not-found-error';
+import UnexpectedRoleError from './errors/unexpected-role-error';
+import SameProfileRoleError from './errors/same-profile-role-error';
+import MatchAlreadyExistsError from './errors/match-already-exists-error';
+
 export default class ProfilesService {
+    private matchesService: MatchesService;
+    private swipesService: SwipesService;
+
+    constructor(
+        matchesService: MatchesService,
+        swipesService: SwipesService
+    ) {
+        this.matchesService = matchesService;
+        this.swipesService = swipesService;
+    }
+
     getProfilesToSwipe = async (
         accountId: number
     ): Promise<ProfileModel[]> => {
@@ -111,7 +122,7 @@ export default class ProfilesService {
         });
 
         if (!profile) {
-            throw new ProfileNotFound(accountId);
+            throw new ProfileNotFoundError(accountId);
         }
 
         return profile;
@@ -127,7 +138,7 @@ export default class ProfilesService {
         });
 
         if (!profile) {
-            throw new ProfileNotFound(profileId);
+            throw new ProfileNotFoundError(profileId);
         }
 
         return profile;
@@ -146,7 +157,7 @@ export default class ProfilesService {
             }
         });
         if (foundProfile) {
-            throw new ProfileAlreadyExists();
+            throw new ProfileAlreadyExistsError();
         }
 
         ProfileModel.create({
@@ -166,16 +177,16 @@ export default class ProfilesService {
         const profile = await this.getProfileByAccountId(accountId);
         const profileToSwipe = await this.getProfileById(profileToSwipeId);
 
-        if (await MatchesService.checkMatchExist(profile.id, profileToSwipeId)) {
-            throw new MatchAlreadyExists(profile.id, profileToSwipeId);
+        if (await this.matchesService.checkIfMatchExist(profile.id, profileToSwipeId)) {
+            throw new MatchAlreadyExistsError(profile.id, profileToSwipeId);
         }
 
         if (profile.role === profileToSwipe.role) {
-            throw new SameRoleError(profileToSwipeId);
+            throw new SameProfileRoleError(profile.id, profileToSwipeId);
         }
 
 
-        await SwipesService.createSwipe({
+        await this.swipesService.createSwipe({
             source_profile_id: profile.id,
             target_profile_id: profileToSwipeId,
             accepted
@@ -185,7 +196,7 @@ export default class ProfilesService {
             return;
         };
 
-        const oppositeSwipe = await SwipesService.getSwipe(profileToSwipeId, profile.id);
+        const oppositeSwipe = await this.swipesService.getSwipe(profileToSwipeId, profile.id);
         if (!oppositeSwipe || !oppositeSwipe.accepted) {
             return;
         };
@@ -210,6 +221,6 @@ export default class ProfilesService {
                 throw new UnexpectedRoleError(profile.role);
         }
 
-        await MatchesService.createMatch(match);
+        await this.matchesService.createMatch(match);
     });
 }

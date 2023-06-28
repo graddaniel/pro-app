@@ -7,16 +7,22 @@ import SequelizeConnection from "./sequelize-connection";
 export type Match = Pick<MatchModel, 'customer_profile_id' | 'professional_profile_id'>;
 
 export default class MatchesService {
-    static createMatch = SequelizeConnection.transaction(async (
+    private swipesService: SwipesService;
+
+    constructor(swipesService: SwipesService) {
+        this.swipesService = swipesService;
+    }
+
+    createMatch = SequelizeConnection.transaction(async (
         match: Match
     ): Promise<void> => {
         const { customer_profile_id, professional_profile_id } = match;
 
         await MatchModel.create(match);
-        await SwipesService.deleteMirrorSwipes(customer_profile_id, professional_profile_id);
+        await this.swipesService.deleteMirrorSwipes(customer_profile_id, professional_profile_id);
     });
 
-    static getMatch = async (
+    getMatch = async (
         firstProfileId: number,
         secondProfileId: number
     ): Promise<Match | null> => {
@@ -36,7 +42,7 @@ export default class MatchesService {
         });
     }
 
-    static checkMatchExist = async (
+    checkIfMatchExist = async (
         firstProfileId: number,
         secondProfileId: number
     ): Promise<boolean> => {

@@ -12,6 +12,8 @@ import AccountsService from './services/accounts-service';
 import ProfilesService from './services/profiles-service';
 import PhotosService from './services/photos-service';
 import SequelizeConnection from './services/sequelize-connection';
+import SwipesService from './services/swipes-service';
+import MatchesService from './services/matches-service';
 import { extractCredentials } from './middleware/extract-credentials';
 import { requireJWT } from './middleware/require-jwt';
 
@@ -27,10 +29,16 @@ export default class Appplication {
     private app: Application;
 
     constructor() {
+        const swipesService = new SwipesService();
+        const matchesService = new MatchesService(swipesService);
+
         const accountsService = new AccountsService();
         const accountsController = new AccountsController(accountsService);
 
-        const profilesService = new ProfilesService();
+        const profilesService = new ProfilesService(
+            matchesService,
+            swipesService
+        );
         const profilesController = new ProfilesController(profilesService);
 
         const photosService = new PhotosService();

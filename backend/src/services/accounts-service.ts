@@ -1,7 +1,7 @@
 import { Op } from 'sequelize';
 
 import AccountModel from '../models/account';
-import AccountAlreadyExists from './errors/account-already-exists-error';
+import AccountAlreadyExistsError from './errors/account-already-exists-error';
 import AccountNotFoundError from './errors/account-not-found-error';
 import IncorrectPasswordError from './errors/incorrect-password-error';
 import JWTService from './jwt-service';
@@ -49,7 +49,7 @@ export default class AccountsService {
         });
 
         if (account) {
-            throw new AccountAlreadyExists(username, email);
+            throw new AccountAlreadyExistsError(username, email);
         }
 
         const newAccount = await AccountModel.create({

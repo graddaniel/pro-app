@@ -1,6 +1,6 @@
 import { StatusCodes } from "http-status-codes";
 
-export default class ProfileNotFound extends Error {
+export default class ProfileNotFoundError extends Error {
     statusCode: StatusCodes;
 
     constructor(accountId: number) {
