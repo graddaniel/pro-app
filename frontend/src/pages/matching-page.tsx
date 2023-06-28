@@ -1,15 +1,25 @@
 import React, {
     useState,
+    useEffect,
+    useRef
 } from 'react';
-
-import { useLoaderData } from 'react-router-dom';
+import {
+    useLoaderData,
+    Form,
+    useSubmit,
+    useActionData,
+} from 'react-router-dom';
+import {
+    Alert
+} from '@mui/material';
 
 import classes from './matching-page.module.css';
-import ProfilesService, { Profile } from '../services/profiles-service';
+import ProfilesService, {
+    Profile
+} from '../services/profiles-service';
 import ProfileCard from '../components/profile-card';
 
 import useSwipe from '../hooks/useSwipe';
-
 
 const MatchingPage = () => {
     const {
@@ -19,8 +29,23 @@ const MatchingPage = () => {
         stopSwiping,
         handleMouseMove
     } = useSwipe();
-
+    const [error, setError] = useState<Error | null>(null);
+    const profilesFromAction = useActionData() as Profile[];
     const [profiles, setProfiles] = useState<Profile[]>(useLoaderData() as Profile[]);
+    const submit = useSubmit();
+    const ref = useRef<HTMLFormElement>(null); 
+
+    useEffect(() => {
+        if (profilesFromAction && profilesFromAction.length > 0) {
+            setProfiles(profilesFromAction as Profile[]);
+        }
+    }, [profilesFromAction]);
+
+    useEffect(() => {
+        if (error) {
+            setTimeout(() => setError(null), 3000);
+        }
+    }, [error]);
 
     const handleStopSwiping = async () => {
         const accepted = stopSwiping();
@@ -30,36 +55,41 @@ const MatchingPage = () => {
 
         try {
             await ProfilesService.swipeProfile(profiles[0].id, accepted);
-            await loadNewProfile();
+            if (profiles.length === 1) {
+                submit(ref.current);
+            } else {
+                setProfiles(profiles.slice(1));
+            }
         } catch (error) {
-            console.error(error);
+            setError(error);
         }
-    }
+    };
 
-    const loadNewProfile = async () => {
-        if (profiles.length === 1) {
-            const newProfiles = await ProfilesService.getProfiles() || [];
-            setProfiles(newProfiles);
-        } else {
-            setProfiles((prevProfiles) => prevProfiles.slice(1));
-        }
-    }
+    const content = profiles.length === 0 ? (
+        <section className={classes.profile}>
+            <h2>No more profiles</h2>
+        </section>
+    ) : (
+        <section
+            style={{
+                left: `${swipeXOffset}px`,
+            }}
+            ref={profileElement}
+            className={classes.profile}
+            onMouseDown={startSwiping}
+            onMouseUp={handleStopSwiping}
+            onMouseMove={handleMouseMove}
+            onMouseOut={handleStopSwiping}
+        >
+                <ProfileCard profile={profiles[0]} />
+                <Form method="POST" ref={ref} />
+        </section>
+    )
 
     return (
         <article className={classes.container}>
-            <section
-                style={{
-                    left: `${swipeXOffset}px`,
-                }}
-                ref={profileElement}
-                className={classes.profile}
-                onMouseDown={startSwiping}
-                onMouseUp={handleStopSwiping}
-                onMouseMove={handleMouseMove}
-                onMouseOut={handleStopSwiping}
-            >
-                <ProfileCard profile={profiles[0]} />
-            </section>
+            {content}
+            {error && <Alert severity='error'>{error.message}</Alert>}
         </article>
     );
 };

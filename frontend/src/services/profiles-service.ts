@@ -11,6 +11,7 @@ export interface Profile {
 class ProfilesService {
     static getProfiles = async (): Promise<Profile[] | undefined> => {
         const token = `Bearer ${localStorage.getItem('token')}`;
+
         try {
             const response = await axios.get('http://localhost:8081/profiles', {
                 headers: {
@@ -20,7 +21,8 @@ class ProfilesService {
 
             return response.data;
         } catch (error) {
-            console.error(`[LOADER ERROR]: ${error}`);
+            console.error(`[Service Error]: ${error}`);
+            throw Error(error.response.data);
         }
     }
 
@@ -29,8 +31,9 @@ class ProfilesService {
         accepted: boolean
     ): Promise<void> => {
         const token = `Bearer ${localStorage.getItem('token')}`;
+
         try {
-            const response = await axios.post(`http://localhost:8081/profiles/swipe`, {
+            await axios.post(`http://localhost:8081/profiles/swipe`, {
                 profileId,
                 accepted
             }, {
@@ -38,12 +41,9 @@ class ProfilesService {
                     'Authorization': token
                 }
             });
-
-            if (response.status !== 201) {
-                throw new Error('Error swiping profile');
-            }
         } catch (error) {
-            throw Error(`[ACTION ERROR]: ${error}`);
+            console.error(`[Service Error]: ${error}`);
+            throw Error('Something went wrong when you swipe.');
         }
     }
 }

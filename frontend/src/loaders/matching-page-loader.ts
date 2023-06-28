@@ -1,6 +1,6 @@
-import ProfilesService from "../services/profiles-service";
+import ProfilesService from '../services/profiles-service';
 
-const profilesLoader = async () => {
+const matchingPageLoader = async () => {
     const profiles = await ProfilesService.getProfiles();
 
     if (!profiles) {
@@ -10,4 +10,4 @@ const profilesLoader = async () => {
     return profiles;
 }
 
-export default profilesLoader;
+export default matchingPageLoader;
