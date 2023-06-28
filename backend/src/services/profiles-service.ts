@@ -52,63 +52,75 @@ export default class ProfilesService {
 
         const profiles = await ProfileModel.findAll({
             attributes: ['id', 'name', 'age', 'description'],
-            include: [{
-                model: SwipeModel,
-                attributes: [],
-                on: {
-                    [Op.or]: [
-                        {
-                            [Op.and]: {
-                                source_profile_id: { [Op.eq]: profileId },
-                                target_profile_id: { [Op.eq]: col('profile.id') }
+            include: [
+                {
+                    model: SwipeModel,
+                    attributes: [],
+                    on: {
+                        [Op.or]: [
+                            {
+                                [Op.and]: {
+                                    source_profile_id: { [Op.eq]: profileId },
+                                    target_profile_id: { [Op.eq]: col('profile.id') }
+                                }
+                            },
+                            {
+                                [Op.and]: {
+                                    source_profile_id: { [Op.eq]: col('profile.id') },
+                                    target_profile_id: { [Op.eq]: profileId }
+                                }
                             }
-                        },
-                        {
-                            [Op.and]: {
-                                source_profile_id: { [Op.eq]: col('profile.id') },
-                                target_profile_id: { [Op.eq]: profileId }
-                            }
-                        }
-                    ]
+                        ]
+                    },
+                    required: false
                 },
-                required: false
-            }],
-            where: {
-                [Op.and]: {
-                    role: searchedRole,
-                    [Op.or]: [
-                        {
-                            '$swipes.source_profile_id$': { [Op.eq]: col('profile.id') },
-                            '$swipes.accepted$': true
-                        },
-                        {
-                            '$swipes.accepted$': null
+                {
+                    model: MatchModel,
+                    attributes: [],
+                    on: role === AccountRoles.CUSTOMER
+                        ? {
+                            [Op.or]: [
+                                {
+                                    customer_profile_id: { [Op.eq]: profileId },
+                                    professional_profile_id: { [Op.eq]: col('profile.id') }
+                                },
+                                {
+                                    professional_profile_id: { [Op.eq]: profileId },
+                                    customer_profile_id: { [Op.eq]: col('profile.id') }
+                                }
+                            ]
                         }
-                    ]
+                        : {
+                            [Op.or]: [
+                                {
+                                    professional_profile_id: { [Op.eq]: profileId },
+                                    customer_profile_id: { [Op.eq]: col('profile.id') }
+                                },
+                                {
+                                    customer_profile_id: { [Op.eq]: profileId },
+                                    professional_profile_id: { [Op.eq]: col('profile.id') }
+                                }
+                            ]
+                        },
+                    required: false
                 }
+            ],
+            where: {
+                role: searchedRole,
+                [Op.or]: [
+                    {
+                        '$swipes.source_profile_id$': { [Op.eq]: col('profile.id') },
+                        '$swipes.accepted$': true
+                    },
+                    {
+                        '$swipes.accepted$': null
+                    }
+                ],
+                [Op.not]: { '$matches.id$': { [Op.not]: null } }
             }
         });
 
-        const existsMatches = await ProfileModel.findAll({
-            attributes: ['id'],
-            include: [{
-                model: MatchModel,
-                attributes: [],
-                on: role === AccountRoles.CUSTOMER ? {
-                    customer_profile_id: { [Op.eq]: profileId },
-                    professional_profile_id: { [Op.eq]: col('profile.id') }
-                } : {
-                    professional_profile_id: { [Op.eq]: profileId },
-                    customer_profile_id: { [Op.eq]: col('profile.id') }
-                },
-                required: true
-            }],
-            where: {
-                role: searchedRole
-            }
-        })
-
-        return profiles.filter(profile => !existsMatches.find(match => match.id === profile.id));
+        return profiles;
     }
 
 
