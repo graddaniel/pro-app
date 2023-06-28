@@ -7,6 +7,8 @@ import SequelizeConnection from '../services/sequelize-connection';
 
 export default class MatchModel extends Model {
     declare id: number;
+    declare customer_profile_id: number;
+    declare professional_profile_id: number;
 }
 
 MatchModel.init({

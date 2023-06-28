@@ -1,3 +1,4 @@
+import cls from 'cls-hooked';
 import { Sequelize } from 'sequelize';
 import config from 'config';
 
@@ -8,6 +9,9 @@ type DatabaseConfig = {
     port: number;
     name: string;
 };
+
+const namespace = cls.createNamespace('sequelize');
+Sequelize.useCLS(namespace);
 
 export default class SequelizeConnection {
     private static _sequelize: Sequelize;
@@ -31,4 +35,13 @@ export default class SequelizeConnection {
 
         return SequelizeConnection._sequelize;
     }
+
+    static transaction = <T, A extends any[]>(operation: (...args: A) => Promise<T>) =>
+        async function (...args: A): Promise<T> {
+            return namespace.get('transaction')
+                ? operation(...args)
+                : SequelizeConnection._sequelize.transaction(
+                    operation.bind(null, ...args)
+                );
+        }
 }
