@@ -2,7 +2,6 @@ import React from 'react';
 import { Box, Typography } from '@mui/material';
 
 import { Profile } from '../services/profiles-service';
-// @ts-ignore
 import FakePhoto from '../../assets/images/profile.jpg';
 
 import classes from './profile-card.module.css';

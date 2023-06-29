@@ -1,7 +1,8 @@
 import React, {
     useState,
     useEffect,
-    useRef
+    useRef,
+    useCallback
 } from 'react';
 import {
     useLoaderData,
@@ -21,14 +22,6 @@ import ProfileCard from '../components/profile-card';
 
 import useSwipe from '../hooks/useSwipe';
 
-const createInput = (name: string, value: string) => {
-    const input = document.createElement('input');
-    input.type = 'hidden';
-    input.name = name;
-    input.value = value;
-    return input;
-};
-
 const MatchingPage = () => {
     const {
         swipeXOffset,
@@ -40,40 +33,41 @@ const MatchingPage = () => {
     const error = useActionData() as Error | undefined;
     const profiles = useLoaderData() as Profile[];
     const [profileIndex, setProfileIndex] = useState(0);
+    const [swipeResult, setSwipeResult] = useState<Array<{profileId: number, accepted: boolean}>>([]);
     const submit = useSubmit();
     const form = useRef<HTMLFormElement>(null); 
 
     useEffect(() => {
-        if (form.current === null) {
-            return;
-        }
-
-        form.current.innerHTML = '';
+        setProfileIndex(0);
+        setSwipeResult([]);
     }, [profiles]);
 
-    const handleFinishedSwiping = () => {
+    useEffect(() => {
+        if (profileIndex === profiles.length) {
+            submit(form.current);
+        }
+    }, [profileIndex, submit]);
+
+    const handleFinishedSwiping = useCallback(() => {
         const accepted = stopSwiping();
         if (accepted === undefined) {
             return;
         }
-        if (form.current === null) {
-            console.log('form not found');
-            return;
-        }
 
-        const profileId = profiles[profileIndex].id;
-        const profileIdInput = createInput('profileId[]', profileId.toString());
-        const acceptedInput = createInput('accepted[]', accepted ? 'true' : 'false');
-
+        setSwipeResult([...swipeResult, { profileId: profiles[profileIndex].id, accepted }]);
         setProfileIndex(profileIndex + 1);
-        form.current.appendChild(profileIdInput);
-        form.current.appendChild(acceptedInput);
+    },[stopSwiping]);
 
-        if (profiles.length === profileIndex + 1) {
-            setProfileIndex(0);
-            submit(form.current)
-        }
-    };
+    const formContent = swipeResult.map((result) => {
+        const { profileId, accepted } = result;
+
+        return (
+            <div key={profileId}>
+                <input type="hidden" name="profileId[]" value={profileId} />
+                <input type="hidden" name="accepted[]" value={accepted ? 'true' : 'false'} />
+            </div>
+        );
+    });
 
     const content = profiles.length === 0 ? (
         <section className={classes.profile}>
@@ -91,8 +85,9 @@ const MatchingPage = () => {
             onMouseUp={handleFinishedSwiping}
             onMouseOut={handleFinishedSwiping}
         >
-                <ProfileCard profile={profiles[profileIndex]} />
+                { profiles.length > profileIndex && <ProfileCard profile={profiles[profileIndex]} /> }
                 <Form method="POST" ref={form}>
+                    {formContent}
                 </Form>
         </section>
     )
