@@ -27,14 +27,14 @@ class ProfilesService {
     }
 
     static swipeProfile = async (
-        profileId: number,
+        id: number,
         accepted: boolean
     ): Promise<void> => {
         const token = `Bearer ${localStorage.getItem('token')}`;
 
         try {
             await axios.post(`http://localhost:8081/profiles/swipe`, {
-                profileId,
+                id,
                 accepted
             }, {
                 headers: {
