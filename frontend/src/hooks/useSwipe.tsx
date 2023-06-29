@@ -5,8 +5,6 @@ import {
 } from 'react';
 import type { MouseEvent } from 'react';
 
-import ProfilesService from '../services/profiles-service';
-
 const useSwipe = () => {
     const [swiping, setSwiping] = useState(false);
     const [swipeStartXCoord, setSwipeStartXCoord] = useState(0);

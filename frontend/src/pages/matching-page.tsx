@@ -14,12 +14,20 @@ import {
 } from '@mui/material';
 
 import classes from './matching-page.module.css';
-import ProfilesService, {
+import {
     Profile
 } from '../services/profiles-service';
 import ProfileCard from '../components/profile-card';
 
 import useSwipe from '../hooks/useSwipe';
+
+const createInput = (name: string, value: string) => {
+    const input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = name;
+    input.value = value;
+    return input;
+};
 
 const MatchingPage = () => {
     const {
@@ -29,39 +37,41 @@ const MatchingPage = () => {
         stopSwiping,
         handleMouseMove
     } = useSwipe();
-    const [error, setError] = useState<Error | null>(null);
-    const profilesFromAction = useActionData() as Profile[];
-    const [profiles, setProfiles] = useState<Profile[]>(useLoaderData() as Profile[]);
+    const error = useActionData() as Error | undefined;
+    const profiles = useLoaderData() as Profile[];
+    const [profileIndex, setProfileIndex] = useState(0);
     const submit = useSubmit();
-    const ref = useRef<HTMLFormElement>(null); 
+    const form = useRef<HTMLFormElement>(null); 
 
     useEffect(() => {
-        if (profilesFromAction && profilesFromAction.length > 0) {
-            setProfiles(profilesFromAction as Profile[]);
+        if (form.current === null) {
+            return;
         }
-    }, [profilesFromAction]);
 
-    useEffect(() => {
-        if (error) {
-            setTimeout(() => setError(null), 3000);
-        }
-    }, [error]);
+        form.current.innerHTML = '';
+    }, [profiles]);
 
-    const handleStopSwiping = async () => {
+    const handleFinishedSwiping = () => {
         const accepted = stopSwiping();
         if (accepted === undefined) {
             return;
         }
+        if (form.current === null) {
+            console.log('form not found');
+            return;
+        }
 
-        try {
-            await ProfilesService.swipeProfile(profiles[0].id, accepted);
-            if (profiles.length === 1) {
-                submit(ref.current);
-            } else {
-                setProfiles(profiles.slice(1));
-            }
-        } catch (error) {
-            setError(error);
+        const profileId = profiles[profileIndex].id;
+        const profileIdInput = createInput('profileId[]', profileId.toString());
+        const acceptedInput = createInput('accepted[]', accepted ? 'true' : 'false');
+
+        setProfileIndex(profileIndex + 1);
+        form.current.appendChild(profileIdInput);
+        form.current.appendChild(acceptedInput);
+
+        if (profiles.length === profileIndex + 1) {
+            setProfileIndex(0);
+            submit(form.current)
         }
     };
 
@@ -77,12 +87,13 @@ const MatchingPage = () => {
             ref={profileElement}
             className={classes.profile}
             onMouseDown={startSwiping}
-            onMouseUp={handleStopSwiping}
             onMouseMove={handleMouseMove}
-            onMouseOut={handleStopSwiping}
+            onMouseUp={handleFinishedSwiping}
+            onMouseOut={handleFinishedSwiping}
         >
-                <ProfileCard profile={profiles[0]} />
-                <Form method="POST" ref={ref} />
+                <ProfileCard profile={profiles[profileIndex]} />
+                <Form method="POST" ref={form}>
+                </Form>
         </section>
     )
 
