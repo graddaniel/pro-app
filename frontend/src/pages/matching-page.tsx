@@ -33,13 +33,13 @@ const MatchingPage = () => {
     const error = useActionData() as Error | undefined;
     const profiles = useLoaderData() as Profile[];
     const [profileIndex, setProfileIndex] = useState(0);
-    const [swipeResult, setSwipeResult] = useState<Array<{profileId: number, accepted: boolean}>>([]);
+    const [swipeResults, setSwipeResults] = useState<Array<{profileId: number, accepted: boolean}>>([]);
     const submit = useSubmit();
     const form = useRef<HTMLFormElement>(null); 
 
     useEffect(() => {
         setProfileIndex(0);
-        setSwipeResult([]);
+        setSwipeResults([]);
     }, [profiles]);
 
     useEffect(() => {
@@ -54,11 +54,11 @@ const MatchingPage = () => {
             return;
         }
 
-        setSwipeResult([...swipeResult, { profileId: profiles[profileIndex].id, accepted }]);
-        setProfileIndex(profileIndex + 1);
+        setSwipeResults(swipeResults => [...swipeResults, { profileId: profiles[profileIndex].id, accepted }]);
+        setProfileIndex(prevState => prevState + 1);
     },[stopSwiping]);
 
-    const formContent = swipeResult.map((result) => {
+    const formContent = swipeResults.map((result) => {
         const { profileId, accepted } = result;
 
         return (
