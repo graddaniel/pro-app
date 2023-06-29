@@ -3,11 +3,19 @@
     flex-direction: column;
     flex-grow: 1;
     background-color: lightskyblue;
+    position: relative;
+    height: calc(100vh - 56px);
+    overflow: hidden;
 }
 
 .profile {
     position: relative;
     flex-grow: 1;
-    width: 40rem;
-    background-color: lightcoral;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    height: 100%;
 }

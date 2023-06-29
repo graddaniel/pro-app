@@ -8,8 +8,8 @@ const loginAction = async ({ request }) => {
     const form = await request.formData();
     const loginData = Object.fromEntries(form.entries()) as LoginData;
 
-    await new AuthService().login(loginData);
-
+    const token = await AuthService.login(loginData);
+    localStorage.setItem('token', token);
     return redirect('/');
 };
 

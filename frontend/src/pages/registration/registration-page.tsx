@@ -1,7 +1,11 @@
 import React from 'react';
 import {
+    useRouteError
+} from 'react-router-dom';
+import {
     Typography,
-    Box
+    Box,
+    Alert
 } from '@mui/material';
 
 import RegisterForm from '../../components/registration-form';
@@ -9,6 +13,8 @@ import RegisterForm from '../../components/registration-form';
 import classes from './registration-page.module.css';
 
 const RegistrationPage = () => {
+    const error = useRouteError() as Error;
+
     return (
         <Box
             component='section'
@@ -21,6 +27,7 @@ const RegistrationPage = () => {
                 Registration
             </Typography>
             <RegisterForm />
+            {error && <Alert severity='error'>{error.message}</Alert>}
         </Box>
     );
 };

@@ -1,66 +1,101 @@
 import React, {
     useState,
-    useCallback,
+    useEffect,
     useRef,
+    useCallback
 } from 'react';
+import {
+    useLoaderData,
+    Form,
+    useSubmit,
+    useActionData,
+} from 'react-router-dom';
+import {
+    Alert
+} from '@mui/material';
 
 import classes from './matching-page.module.css';
+import {
+    Profile
+} from '../services/profiles-service';
+import ProfileCard from '../components/profile-card';
 
-import type { MouseEvent } from 'react';
+import useSwipe from '../hooks/useSwipe';
 
 const MatchingPage = () => {
-    const [swiping, setSwiping] = useState(false);
-    const [swipeStartXCoord, setSwipeStartXCoord] = useState(0);
-    const [swipeXOffset, setSwipeXOffset] = useState(0);
-    const profileElement = useRef<HTMLElement>(null);
+    const {
+        swipeXOffset,
+        profileElement,
+        startSwiping,
+        stopSwiping,
+        handleMouseMove
+    } = useSwipe();
+    const error = useActionData() as Error | undefined;
+    const profiles = useLoaderData() as Profile[];
+    const [profileIndex, setProfileIndex] = useState(0);
+    const [swipeResults, setSwipeResults] = useState<Array<{profileId: number, accepted: boolean}>>([]);
+    const submit = useSubmit();
+    const form = useRef<HTMLFormElement>(null); 
 
-    const startSwiping = useCallback((event: MouseEvent) => {
-        setSwiping(true);
-        setSwipeStartXCoord(event.clientX)
-    }, []);
+    useEffect(() => {
+        setProfileIndex(0);
+        setSwipeResults([]);
+    }, [profiles]);
 
-    const stopSwiping = useCallback(() => {
-        if (!profileElement.current) {
-            console.log("No element found")
+    useEffect(() => {
+        if (profileIndex === profiles.length) {
+            submit(form.current);
+        }
+    }, [profileIndex, submit]);
+
+    const handleFinishedSwiping = useCallback(() => {
+        const accepted = stopSwiping();
+        if (accepted === undefined) {
             return;
         }
 
-        const elementsWidth = profileElement.current.clientWidth;
-        console.log(elementsWidth, elementsWidth/2, swipeXOffset)
-        if (Math.abs(swipeXOffset) > elementsWidth / 2) {
-            console.log("swiped")
-        } else {
-            console.log("not swiped")
-        }
-        
-        setSwiping(false);
-        setSwipeXOffset(0);
-    }, [swipeXOffset]);
+        setSwipeResults(swipeResults => [...swipeResults, { profileId: profiles[profileIndex].id, accepted }]);
+        setProfileIndex(prevState => prevState + 1);
+    },[stopSwiping]);
 
-    const handleMouseMove = useCallback((event: MouseEvent) => {
-        if (swiping) {
-            const mouseXPosition = event.clientX;
-            
-            setSwipeXOffset(mouseXPosition - swipeStartXCoord);
-        }
-    }, [swiping]);
+    const formContent = swipeResults.map((result) => {
+        const { profileId, accepted } = result;
+
+        return (
+            <div key={profileId}>
+                <input type="hidden" name="profileId[]" value={profileId} />
+                <input type="hidden" name="accepted[]" value={accepted ? 'true' : 'false'} />
+            </div>
+        );
+    });
+
+    const content = profiles.length === 0 ? (
+        <section className={classes.profile}>
+            <h2>No more profiles</h2>
+        </section>
+    ) : (
+        <section
+            style={{
+                left: `${swipeXOffset}px`,
+            }}
+            ref={profileElement}
+            className={classes.profile}
+            onMouseDown={startSwiping}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleFinishedSwiping}
+            onMouseOut={handleFinishedSwiping}
+        >
+                { profiles.length > profileIndex && <ProfileCard profile={profiles[profileIndex]} /> }
+                <Form method="POST" ref={form}>
+                    {formContent}
+                </Form>
+        </section>
+    )
 
     return (
         <article className={classes.container}>
-            MATCHING
-            <section
-                style={{
-                    left: `${swipeXOffset}px`,
-                }}
-                ref={profileElement}
-                className={classes.profile}
-                onMouseDown={startSwiping}
-                onMouseUp={stopSwiping}
-                onMouseMove={handleMouseMove}
-                onMouseOut={stopSwiping}
-            >
-
-            </section>
+            {content}
+            {error && <Alert severity='error'>{error.message}</Alert>}
         </article>
     );
 };

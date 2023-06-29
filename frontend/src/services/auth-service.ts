@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError, AxiosResponse } from 'axios';
 
 export interface LoginData {
     username: string;
@@ -12,8 +12,7 @@ export interface RegistrationData {
 }
 
 class AuthService {
-
-    login = async ({ username, password }: LoginData) => {
+    static login = async ({ username, password }: LoginData): Promise<string> => {
         const credentials = btoa(`${username}:${password}`);
 
         try {
@@ -25,11 +24,12 @@ class AuthService {
 
             return response.data;
         } catch (error) {
-            console.error(`[ACTION ERROR]: ${error}`);
+            console.error(`[Service Error]: ${error}`);
+            throw Error(error.response.data);
         }
     }
 
-    register = async ({ username, password, email }: RegistrationData) => {
+    static register = async ({ username, password, email }: RegistrationData): Promise<string> => {
         const credentials = btoa(`${username}:${password}`);
         const requestBody = {
             email
@@ -44,7 +44,8 @@ class AuthService {
 
             return response.data;
         } catch (error) {
-            console.error(`[ACTION ERROR]: ${error}`);
+            console.error(`[Service Error]: ${error}`);
+            throw Error(error.response.data);
         }
     }
 }
