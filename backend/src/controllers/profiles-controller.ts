@@ -45,6 +45,21 @@ export default class ProfilesController {
         res.status(StatusCodes.OK).send(profile);
     };
 
+    getMatchesProfiles = async (
+        req: AuthenticatedRequest,
+        res: Response
+    ): Promise<void> => {
+        const {
+            id: accountId
+        } = req.currentUser;
+
+        const profiles = await this.profilesService.getMatchesProfiles(
+            accountId
+        );
+
+        res.status(StatusCodes.OK).send(profiles);
+    };
+
     postProfiles = async (
         req: AuthenticatedRequest,
         res: Response
