@@ -26,6 +26,7 @@ import loginAction from './src/actions/login-page-action';
 import registrationAction from './src/actions/registration-page-action';
 import matchingPageAction from './src/actions/matching-page.action';
 import matchingPageLoader from './src/loaders/matching-page-loader';
+import matchesPageLoader from './src/loaders/matches-page-loader';
 import createProfilePageLoader from './src/loaders/create-profile-page-loader';
 import profilePageLoader from './src/loaders/profile-page-loader';
 
@@ -47,6 +48,7 @@ const router = createBrowserRouter(
                 <Route
                     path={ROUTES.MATCHES_PAGE.PATH}
                     element={<MatchesPage />}
+                    loader={matchesPageLoader}
                 />
                 <Route
                     path={ROUTES.PROFILE_PAGE.PATH}
