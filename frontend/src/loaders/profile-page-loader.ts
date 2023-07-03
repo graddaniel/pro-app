@@ -1,11 +1,10 @@
 import { redirect } from 'react-router-dom';
 import ProfilesService from '../services/profiles-service';
 
-const matchingPageLoader = async () => {
+const profilePageLoader = async () => {
     try {
-        return await ProfilesService.getProfiles();
+        await ProfilesService.getProfile();
     } catch (error) {
-        console.log(error.response.status);
         switch (error.response.status) {
             case 404:
                 return redirect('/create-profile');
@@ -16,4 +15,4 @@ const matchingPageLoader = async () => {
     }
 }
 
-export default matchingPageLoader;
+export default profilePageLoader;

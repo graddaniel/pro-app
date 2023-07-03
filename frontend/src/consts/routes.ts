@@ -8,6 +8,9 @@ const ROUTES = {
     PROFILE_PAGE: {
         PATH: '/profile'
     },
+    CREATE_PROFILE_PAGE: {
+        PATH: '/create-profile'
+    },
     REGISTRATION_PAGE: {
         PATH: '/registration'
     },

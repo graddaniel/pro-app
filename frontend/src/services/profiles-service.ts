@@ -22,9 +22,27 @@ class ProfilesService {
             return response.data;
         } catch (error) {
             console.error(`[Service Error]: ${error}`);
-            throw Error(error.response.data);
+            throw error;
         }
     }
+
+    static getProfile = async (): Promise<Profile> => {
+        const token = `Bearer ${localStorage.getItem('token')}`;
+
+        try {
+            const response = await axios.get('http://localhost:8081/profiles/', {
+                headers: {
+                    'Authorization': token
+                }
+            });
+
+            return response.data;
+        } catch (error) {
+            console.error(`[Service Error]: ${error}`);
+            throw error;
+        }
+    }
+
 
     static swipeProfile = async (
         id: number,

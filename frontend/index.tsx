@@ -17,14 +17,19 @@ import MatchesPage from './src/pages/matches-page';
 import ProfilePage from './src/pages/profile-page';
 import RegistrationPage from './src/pages/registration/registration-page';
 import LoginPage from './src/pages/login/login-page';
+import CreateProfilePage from './src/pages/create-profile-page';
+
+import GuardedRoute from './src/components/guarded-route';
 
 import loginAction from './src/actions/login-page-action';
 import registrationAction from './src/actions/registration-page-action';
+import matchingPageAction from './src/actions/matching-page.action';
+import matchingPageLoader from './src/loaders/matching-page-loader';
+import matchesPageLoader from './src/loaders/matches-page-loader';
+import createProfilePageLoader from './src/loaders/create-profile-page-loader';
+import profilePageLoader from './src/loaders/profile-page-loader';
 
 import ROUTES from './src/consts/routes';
-import matchingPageLoader from './src/loaders/matching-page-loader';
-import matchingPageAction from './src/actions/matching-page.action';
-import GuardedRoute from './src/components/guarded-route';
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -42,10 +47,17 @@ const router = createBrowserRouter(
                 <Route
                     path={ROUTES.MATCHES_PAGE.PATH}
                     element={<MatchesPage />}
+                    loader={matchesPageLoader}
                 />
                 <Route
                     path={ROUTES.PROFILE_PAGE.PATH}
                     element={<ProfilePage />}
+                    loader={profilePageLoader}
+                />
+                <Route
+                    path={ROUTES.CREATE_PROFILE_PAGE.PATH}
+                    element={<CreateProfilePage />}
+                    loader={createProfilePageLoader}
                 />
             </Route>
             <Route
