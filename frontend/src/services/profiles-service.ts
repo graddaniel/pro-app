@@ -9,7 +9,7 @@ export interface Profile {
 }
 
 class ProfilesService {
-    static getProfiles = async (): Promise<Profile[] | undefined> => {
+    static getProfiles = async (): Promise<Profile[]> => {
         const token = `Bearer ${localStorage.getItem('token')}`;
 
         try {

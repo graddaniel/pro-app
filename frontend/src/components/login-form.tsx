@@ -6,13 +6,15 @@ import {
     FormGroup,
     Paper,
     Button,
-    TextField
+    TextField,
+    Typography
 } from '@mui/material';
 import {
-    Form
+    Form, Link
 } from 'react-router-dom';
 
 import classes from './login-form.module.css';
+import ROUTES from '../consts/routes';
 
 const InputProps = {
     minLength: 8,
@@ -62,6 +64,10 @@ const LoginForm = () => {
                     </Button>
                 </FormGroup>
             </Form>
+            <Typography sx={{ marginTop: '1rem' }}>
+                No have account yet?{' '}
+                <Link to={ROUTES.REGISTRATION_PAGE.PATH}>Sign up!</Link>
+            </Typography>
         </Paper>
     );
 };

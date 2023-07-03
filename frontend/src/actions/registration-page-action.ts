@@ -13,7 +13,7 @@ const registrationAction = async ({ request }) => {
     const token = await AuthService.register(registrationData);
     localStorage.setItem('token', token);
 
-    return redirect('/');
+    return redirect('/profile');
 };
 
 export default registrationAction;

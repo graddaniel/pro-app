@@ -24,6 +24,7 @@ import registrationAction from './src/actions/registration-page-action';
 import ROUTES from './src/consts/routes';
 import matchingPageLoader from './src/loaders/matching-page-loader';
 import matchingPageAction from './src/actions/matching-page.action';
+import GuardedRoute from './src/components/guarded-route';
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -31,20 +32,22 @@ const router = createBrowserRouter(
             path="/"
             element={<Application />}
         >
-            <Route
-                path={ROUTES.MATCHING_PAGE.PATH}
-                element={<MatchingPage />}
-                loader={matchingPageLoader}
-                action={matchingPageAction}
-            />
-            <Route
-                path={ROUTES.MATCHES_PAGE.PATH}
-                element={<MatchesPage />}
-            />
-            <Route
-                path={ROUTES.PROFILE_PAGE.PATH}
-                element={<ProfilePage />}
-            />
+            <Route element={<GuardedRoute redirectPath={ROUTES.LOGIN_PAGE.PATH} />}>
+                <Route
+                    path={ROUTES.MATCHING_PAGE.PATH}
+                    element={<MatchingPage />}
+                    loader={matchingPageLoader}
+                    action={matchingPageAction}
+                />
+                <Route
+                    path={ROUTES.MATCHES_PAGE.PATH}
+                    element={<MatchesPage />}
+                />
+                <Route
+                    path={ROUTES.PROFILE_PAGE.PATH}
+                    element={<ProfilePage />}
+                />
+            </Route>
             <Route
                 path={ROUTES.REGISTRATION_PAGE.PATH}
                 element={<RegistrationPage />}

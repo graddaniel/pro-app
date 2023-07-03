@@ -1,13 +1,12 @@
+import { redirect } from 'react-router-dom';
 import ProfilesService from '../services/profiles-service';
 
 const matchingPageLoader = async () => {
-    const profiles = await ProfilesService.getProfiles();
-
-    if (!profiles) {
-        return [];
+    try {
+        return await ProfilesService.getProfiles();
+    } catch (error) {
+        return redirect('/login');
     }
-
-    return profiles;
 }
 
 export default matchingPageLoader;

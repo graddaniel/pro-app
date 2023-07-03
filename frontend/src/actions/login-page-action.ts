@@ -10,7 +10,7 @@ const loginAction = async ({ request }) => {
 
     const token = await AuthService.login(loginData);
     localStorage.setItem('token', token);
-    return redirect('/');
+    return redirect('/matching');
 };
 
 export default loginAction;
