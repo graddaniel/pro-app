@@ -8,6 +8,8 @@ export interface Profile {
     accountId: number;
 }
 
+export type ProfileFormData = Omit<Profile, 'id' | 'accountId'>;
+
 class ProfilesService {
     static getProfiles = async (): Promise<Profile[] | undefined> => {
         const token = `Bearer ${localStorage.getItem('token')}`;
@@ -44,6 +46,23 @@ class ProfilesService {
         } catch (error) {
             console.error(`[Service Error]: ${error}`);
             throw Error('Something went wrong when you swipe.');
+        }
+    }
+
+    static createProfile = async (
+        profile: ProfileFormData
+    ): Promise<void> => {
+        const token = `Bearer ${localStorage.getItem('token')}`;
+
+        try {
+            await axios.post('http://localhost:8081/profiles', profile, {
+                headers: {
+                    'Authorization': token
+                }
+            });
+        } catch (error) {
+            console.error(`[Service Error]: ${error}`);
+            throw error.response;
         }
     }
 }

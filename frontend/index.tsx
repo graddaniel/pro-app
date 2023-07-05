@@ -17,13 +17,15 @@ import MatchesPage from './src/pages/matches-page';
 import ProfilePage from './src/pages/profile-page';
 import RegistrationPage from './src/pages/registration/registration-page';
 import LoginPage from './src/pages/login/login-page';
+import CreateProfilePage from './src/pages/create-profile-page';
 
 import loginAction from './src/actions/login-page-action';
 import registrationAction from './src/actions/registration-page-action';
 
 import ROUTES from './src/consts/routes';
 import matchingPageLoader from './src/loaders/matching-page-loader';
-import matchingPageAction from './src/actions/matching-page.action';
+import matchingPageAction from './src/actions/matching-page-action';
+import createProfileAction from './src/actions/create-profile-action';
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -44,6 +46,11 @@ const router = createBrowserRouter(
             <Route
                 path={ROUTES.PROFILE_PAGE.PATH}
                 element={<ProfilePage />}
+            />
+            <Route
+                path={ROUTES.CREATE_PROFILE_PAGE.PATH}
+                element={<CreateProfilePage />}
+                action={createProfileAction}
             />
             <Route
                 path={ROUTES.REGISTRATION_PAGE.PATH}
