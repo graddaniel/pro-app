@@ -123,7 +123,7 @@ export default class ProfilesService {
         return profiles;
     }
 
-    getMatchesProfiles = async (
+    getMatches = async (
         accountId: number
     ): Promise<ProfileModel[]> => {
         const accountProfile = await this.getProfileByAccountId(accountId);

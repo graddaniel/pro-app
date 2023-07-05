@@ -61,7 +61,7 @@ export default class Appplication {
 
         const profilesRouter = express.Router();
         profilesRouter.get('/', requireJWT, profilesController.getProfilesToSwipe);
-        profilesRouter.get('/matches', requireJWT, profilesController.getMatchesProfiles);
+        profilesRouter.get('/matches', requireJWT, profilesController.getMatches);
         profilesRouter.post('/', requireJWT, profilesController.postProfiles);
         profilesRouter.post('/swipe', requireJWT, profilesController.swipeProfile);
         profilesRouter.get('/ofAccount', requireJWT, profilesController.getProfileByAccountId);

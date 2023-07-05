@@ -1,21 +1,25 @@
 .container {
+    position: relative;
+    
+    height: 100%;
+    
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    background-color: lightskyblue;
-    position: relative;
-    height: calc(100vh - 56px);
     overflow: hidden;
+    
+    background-color: lightskyblue;
 }
 
 .profile {
-    position: relative;
-    flex-grow: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
     position: absolute;
     top: 0;
+    
+    width: 100%;
     height: 100%;
+    
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
 }

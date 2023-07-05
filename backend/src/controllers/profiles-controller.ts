@@ -45,7 +45,7 @@ export default class ProfilesController {
         res.status(StatusCodes.OK).send(profile);
     };
 
-    getMatchesProfiles = async (
+    getMatches = async (
         req: AuthenticatedRequest,
         res: Response
     ): Promise<void> => {
@@ -53,7 +53,7 @@ export default class ProfilesController {
             id: accountId
         } = req.currentUser;
 
-        const profiles = await this.profilesService.getMatchesProfiles(
+        const profiles = await this.profilesService.getMatches(
             accountId
         );
 

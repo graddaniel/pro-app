@@ -1,10 +1,13 @@
 .container {
+    position: relative;
+    
+    height: 100%;
+    
     display: flex;
     flex-grow: 1;
     justify-content: center;
     align-items: center;
-    background-color: lightskyblue;
-    position: relative;
-    height: calc(100vh - 56px);
     overflow: hidden;
+    
+    background-color: lightskyblue;
 }
