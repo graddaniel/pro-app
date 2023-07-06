@@ -5,16 +5,16 @@ import {
     Outlet
 } from "react-router-dom";
 
-interface GuardedRouteProps {
+interface AnonymousRouteProps {
     redirectPath: To;
 }
 
-const GuardedRoute = ({ redirectPath = '/' }: GuardedRouteProps) => {
+const AnonymousRoute = ({ redirectPath = '/' }: AnonymousRouteProps) => {
     const token = localStorage.getItem('token');
     
     return (
-        token ? <Outlet /> : <Navigate to={redirectPath} />
+        token ? <Navigate to={redirectPath} /> : <Outlet />
     );  
 }
     
-export default GuardedRoute;
+export default AnonymousRoute;

@@ -9,6 +9,7 @@ import {
     Form,
     useSubmit,
     useActionData,
+    useNavigate
 } from 'react-router-dom';
 import {
     Alert
@@ -22,6 +23,8 @@ import ProfileCard from '../components/profile-card';
 
 import useSwipe from '../hooks/useSwipe';
 
+import ROUTES from '../consts/routes';
+
 const MatchingPage = () => {
     const {
         swipeXOffset,
@@ -31,11 +34,17 @@ const MatchingPage = () => {
         handleMouseMove
     } = useSwipe();
     const error = useActionData() as Error | undefined;
-    const profiles = useLoaderData() as Profile[];
+    const profiles = useLoaderData() as Profile[] | null;
     const [profileIndex, setProfileIndex] = useState(0);
     const [swipeResults, setSwipeResults] = useState<Array<{profileId: number, accepted: boolean}>>([]);
-    const submit = useSubmit();
     const form = useRef<HTMLFormElement>(null); 
+    const submit = useSubmit();
+    const navigate = useNavigate();
+
+    if (!profiles) {
+        navigate(ROUTES.CREATE_PROFILE_PAGE.PATH);
+        return null;
+    }
 
     useEffect(() => {
         setProfileIndex(0);

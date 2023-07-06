@@ -22,24 +22,26 @@ class ProfilesService {
             return response.data;
         } catch (error) {
             console.error(`[Service Error]: ${error}`);
-            throw error;
+
+            throw Error(error.response.data);
         }
     }
 
-    static getProfile = async (): Promise<Profile> => {
+    static getProfileOfAccount = async (): Promise<Profile | null> => {
         const token = `Bearer ${localStorage.getItem('token')}`;
 
         try {
-            const response = await axios.get('http://localhost:8081/profiles/', {
+            const response = await axios.get('http://localhost:8081/profiles/ofAccount', {
                 headers: {
                     'Authorization': token
                 }
             });
 
-            return response.data;
+            return response.data as Profile | null;
         } catch (error) {
             console.error(`[Service Error]: ${error}`);
-            throw error;
+
+            throw Error(error.response.data);
         }
     }
 

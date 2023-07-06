@@ -1,17 +1,21 @@
-import { redirect } from 'react-router-dom';
+import {
+    redirect
+} from 'react-router-dom';
+
 import ProfilesService from '../services/profiles-service';
+import ROUTES from '../consts/routes';
 
 const profilePageLoader = async () => {
     try {
-        await ProfilesService.getProfile();
-    } catch (error) {
-        switch (error.response.status) {
-            case 404:
-                return redirect('/create-profile');
+        const profile = await ProfilesService.getProfileOfAccount();
 
-            default:
-                return redirect('/login');
+        if (!profile) {
+            return redirect(ROUTES.CREATE_PROFILE_PAGE.PATH);
         }
+
+        return profile;
+    } catch (error) {
+        return redirect(ROUTES.LOGIN_PAGE.PATH);
     }
 }
 

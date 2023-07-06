@@ -10,7 +10,8 @@ import {
     Typography
 } from '@mui/material';
 import {
-    Form, Link
+    Form,
+    Link
 } from 'react-router-dom';
 
 import classes from './login-form.module.css';
@@ -65,7 +66,7 @@ const LoginForm = () => {
                 </FormGroup>
             </Form>
             <Typography sx={{ marginTop: '1rem' }}>
-                No have account yet?{' '}
+                No account yet?{' '}
                 <Link to={ROUTES.REGISTRATION_PAGE.PATH}>Sign up!</Link>
             </Typography>
         </Paper>

@@ -31,6 +31,10 @@ export default class ProfilesService {
         accountId: number
     ): Promise<ProfileModel[]> => {
         const accountProfile = await this.getProfileByAccountId(accountId);
+        if (!accountProfile) {
+            throw new ProfileNotFoundError(accountId);
+        }
+
         const {
             id: profileId,
             role
@@ -126,18 +130,12 @@ export default class ProfilesService {
 
     getProfileByAccountId = async (
         accountId: number
-    ): Promise<ProfileModel> => {
-        const profile = await ProfileModel.findOne({
+    ): Promise<ProfileModel | null> => {
+        return await ProfileModel.findOne({
             where: {
                 accountId,
             }
         });
-
-        if (!profile) {
-            throw new ProfileNotFoundError(accountId);
-        }
-
-        return profile;
     }
 
     getProfileById = async (
@@ -187,6 +185,10 @@ export default class ProfilesService {
         accepted: boolean
     ): Promise<void> => {
         const profile = await this.getProfileByAccountId(accountId);
+        if (!profile) {
+            throw new ProfileNotFoundError(accountId);
+        }
+
         const profileToSwipe = await this.getProfileById(profileToSwipeId);
 
         if (await this.matchesService.checkIfMatchExist(profile.id, profileToSwipeId)) {

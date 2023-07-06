@@ -9,7 +9,7 @@ const ROUTES = {
         PATH: '/profile'
     },
     CREATE_PROFILE_PAGE: {
-        PATH: '/create-profile'
+        PATH: '/createProfile'
     },
     REGISTRATION_PAGE: {
         PATH: '/registration'
