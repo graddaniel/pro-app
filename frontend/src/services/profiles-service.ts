@@ -62,7 +62,7 @@ class ProfilesService {
             });
         } catch (error) {
             console.error(`[Service Error]: ${error}`);
-            throw error.response;
+            throw Error(error.response.data);
         }
     }
 }

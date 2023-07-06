@@ -5,6 +5,7 @@ import {
 import ProfilesService, {
     ProfileFormData
 } from '../services/profiles-service';
+import ROUTES from '../consts/routes';
 
 const createProfileAction = async ({ request }) => {
     const form = await request.formData();
@@ -16,7 +17,7 @@ const createProfileAction = async ({ request }) => {
         return error;
     }
 
-    return redirect('/matching');
+    return redirect(ROUTES.PROFILE_PAGE.PATH);
 };
 
 export default createProfileAction;

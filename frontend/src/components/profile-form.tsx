@@ -10,15 +10,16 @@ import {
     Select,
     MenuItem,
     FormControl,
-    Input,
     InputLabel
 } from '@mui/material';
 import {
     Form
 } from 'react-router-dom';
 
-import classes from './profile-form.module.css';
 import { AccountRoles } from '../consts/constants';
+import INPUT_VALIDATION from '../config/input-validation';
+
+import classes from './profile-form.module.css';
 
 const ProfileForm = () => {
     const [name, setName] = React.useState('');
@@ -45,11 +46,7 @@ const ProfileForm = () => {
                         value={name}
                         onChange={handleNameChange}
                         required
-                        inputProps={{
-                            minLength: 1,
-                            maxLength: 32,
-                            pattern: '^[a-zA-Z0-9 ]+$'
-                        }}
+                        inputProps={INPUT_VALIDATION.PROFILE_NAME}
                     />
                     <FormControl fullWidth>
                         <InputLabel id="role-label">Role</InputLabel>
@@ -73,11 +70,7 @@ const ProfileForm = () => {
                             value={age}
                             onChange={handleAgeChange}
                             required
-                            inputProps={{
-                                min: 1,
-                                max: 120,
-                                step: 1
-                            }}
+                            inputProps={INPUT_VALIDATION.PROFILE_AGE}
                         />
                     </FormControl>
                     <FormControl fullWidth>
@@ -89,10 +82,7 @@ const ProfileForm = () => {
                             multiline
                             rows={4}
                             required
-                            inputProps={{
-                                minLength: 1,
-                                maxLength: 256
-                            }}
+                            inputProps={INPUT_VALIDATION.PROFILE_DESCRIPTION}
                         />
                     </FormControl>
                     <Button

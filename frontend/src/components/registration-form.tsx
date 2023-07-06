@@ -13,12 +13,9 @@ import {
     Form,
 } from 'react-router-dom';
 
-import classes from './registration-form.module.css';
+import INPUT_VALIDATION from '../config/input-validation';
 
-const InputProps = {
-    minLength: 8,
-    maxLength: 32
-};
+import classes from './registration-form.module.css';
 
 const RegistrationForm = () => {
     const [username, setUsername] = useState('');
@@ -45,10 +42,7 @@ const RegistrationForm = () => {
                         value={username}
                         onChange={handleUsernameChange}
                         required
-                        inputProps={{
-                            ...InputProps,
-                            pattern: '^[a-zA-Z0-9]+$'
-                        }}
+                        inputProps={INPUT_VALIDATION.USERNAME}
                     />
                     <TextField
                         name="password"  
@@ -57,7 +51,7 @@ const RegistrationForm = () => {
                         value={password}
                         onChange={handlePasswordChange}
                         required
-                        inputProps={InputProps}
+                        inputProps={INPUT_VALIDATION.PASSWORD}
                     />
                     <TextField
                         name="confirm-password"
@@ -67,7 +61,7 @@ const RegistrationForm = () => {
                         onChange={handleConfirmPasswordChange}
                         error={password !== confirmPassword}
                         required
-                        inputProps={InputProps}
+                        inputProps={INPUT_VALIDATION.PASSWORD}
                     />
                     <TextField
                         name="email"
