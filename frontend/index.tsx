@@ -18,12 +18,12 @@ import ProfilePage from './src/pages/profile-page';
 import RegistrationPage from './src/pages/registration/registration-page';
 import LoginPage from './src/pages/login/login-page';
 
+import ROUTES from './src/consts/routes';
 import loginAction from './src/actions/login-page-action';
 import registrationAction from './src/actions/registration-page-action';
-
-import ROUTES from './src/consts/routes';
-import matchingPageLoader from './src/loaders/matching-page-loader';
 import matchingPageAction from './src/actions/matching-page.action';
+import matchingPageLoader from './src/loaders/matching-page-loader';
+import matchesPageLoader from './src/loaders/matches-page-loader';
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -40,6 +40,7 @@ const router = createBrowserRouter(
             <Route
                 path={ROUTES.MATCHES_PAGE.PATH}
                 element={<MatchesPage />}
+                loader={matchesPageLoader}
             />
             <Route
                 path={ROUTES.PROFILE_PAGE.PATH}
