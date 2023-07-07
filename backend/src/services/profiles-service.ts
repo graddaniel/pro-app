@@ -131,6 +131,10 @@ export default class ProfilesService {
         accountId: number
     ): Promise<ProfileModel[]> => {
         const accountProfile = await this.getProfileByAccountId(accountId);
+        if (!accountProfile) {
+            throw new ProfileNotFoundError(accountId);
+        }
+
         const {
             id: profileId,
             role
