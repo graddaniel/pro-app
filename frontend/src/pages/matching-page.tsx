@@ -64,7 +64,7 @@ const MatchingPage = () => {
         }
 
         setSwipeResults(swipeResults => [...swipeResults, { profileId: profiles[profileIndex].id, accepted }]);
-        setProfileIndex(prevState => prevState + 1);
+        setProfileIndex(profileIndex => profileIndex + 1);
     },[stopSwiping]);
 
     const formContent = swipeResults.map((result) => {

@@ -17,11 +17,11 @@ interface ProfileCardProps {
 
 const ProfileCard = ({ profile }: ProfileCardProps) => {
     return (
-        <Box className={classes.profileCard}>
-            <Box className={classes.profileCard__overlay} />
+        <Box className={classes.card}>
+            <Box className={classes.overlay} />
             <Box>
                 <img
-                    className={classes.profileCard__image}
+                    className={classes.image}
                     src={FakePhoto}
                     alt="Profile images"
                 />

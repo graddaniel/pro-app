@@ -1,4 +1,4 @@
-.profileCard {
+.card {
     width: 400px;
     height: 400px;
     position: relative;
@@ -13,18 +13,19 @@
     background-color: #fff;
 }
 
-.profileCard__image {
+.image {
     width: 100%;
     height: 100%;
     object-fit: cover;
     border-radius: 1rem 1rem 0 0;
 }
 
-.profileCard__overlay {
+.overlay {
     width: 100%;
     height: 100%;
 
     position: absolute;
     top: 0;
     left: 0;
+    z-index: 100;
 }

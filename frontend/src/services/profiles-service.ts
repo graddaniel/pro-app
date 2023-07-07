@@ -45,6 +45,22 @@ class ProfilesService {
         }
     }
 
+    static getMatchesProfiles = async (): Promise<Profile[]> => {
+        const token = `Bearer ${localStorage.getItem('token')}`;
+
+        try {
+            const response = await axios.get('http://localhost:8081/profiles/matches', {
+                headers: {
+                    'Authorization': token
+                }
+            });
+
+            return response.data;
+        } catch (error) {
+            console.error(`[Service Error]: ${error}`);
+            throw Error(error.response.data);
+        }
+    }
 
     static swipeProfile = async (
         id: number,
