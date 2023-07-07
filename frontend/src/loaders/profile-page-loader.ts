@@ -15,7 +15,7 @@ const profilePageLoader = async () => {
 
         return profile;
     } catch (error) {
-        return redirect(ROUTES.LOGIN_PAGE.PATH);
+        return error;
     }
 }
 

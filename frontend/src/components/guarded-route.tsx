@@ -1,20 +1,18 @@
 import React from 'react';
 import {
-    Navigate,
-    To,
-    Outlet
+    Navigate
 } from "react-router-dom";
 
+import ROUTES from '../consts/routes';
+
 interface GuardedRouteProps {
-    redirectPath: To;
+    children: React.ReactElement;
 }
 
-const GuardedRoute = ({ redirectPath = '/' }: GuardedRouteProps) => {
+const GuardedRoute = ({ children }: GuardedRouteProps) => {
     const token = localStorage.getItem('token');
     
-    return (
-        token ? <Outlet /> : <Navigate to={redirectPath} />
-    );  
+    return token ? children : <Navigate to={ROUTES.LOGIN_PAGE.PATH} />;
 }
     
 export default GuardedRoute;

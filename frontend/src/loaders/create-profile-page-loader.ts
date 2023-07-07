@@ -15,7 +15,7 @@ const createProfilePageLoader = async () => {
 
         return null;
     } catch (error) {
-        return redirect(ROUTES.LOGIN_PAGE.PATH);
+        return error;
     }
 }
 

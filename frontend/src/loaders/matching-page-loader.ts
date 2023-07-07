@@ -15,7 +15,7 @@ const matchingPageLoader = async () => {
 
         return await ProfilesService.getProfiles();
     } catch (error) {
-        return redirect(ROUTES.LOGIN_PAGE.PATH);
+        return error;
     }
 }
 

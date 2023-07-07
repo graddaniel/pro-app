@@ -1,20 +1,18 @@
 import React from 'react';
 import {
-    Navigate,
-    To,
-    Outlet
+    Navigate
 } from "react-router-dom";
 
+import ROUTES from '../consts/routes';
+
 interface AnonymousRouteProps {
-    redirectPath: To;
+    children: React.ReactElement;
 }
 
-const AnonymousRoute = ({ redirectPath = '/' }: AnonymousRouteProps) => {
+const AnonymousRoute = ({children}: AnonymousRouteProps) => {
     const token = localStorage.getItem('token');
     
-    return (
-        token ? <Navigate to={redirectPath} /> : <Outlet />
-    );  
+    return token ? <Navigate to={ ROUTES.MATCHING_PAGE.PATH} /> : children;
 }
     
 export default AnonymousRoute;

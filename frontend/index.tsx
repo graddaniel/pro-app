@@ -37,42 +37,61 @@ const router = createBrowserRouter(
             path="/"
             element={<Application />}
         >
-            <Route element={<GuardedRoute redirectPath={ROUTES.LOGIN_PAGE.PATH}/>}> 
-                <Route
-                    path={ROUTES.MATCHING_PAGE.PATH}
-                    element={<MatchingPage />}
-                    loader={matchingPageLoader}
+            <Route
+                path={ROUTES.MATCHING_PAGE.PATH}
+                element={
+                    <GuardedRoute>
+                        <MatchingPage />
+                    </GuardedRoute>
+                }
+                loader={matchingPageLoader}
                     action={matchingPageAction}
-                />
-                <Route
-                    path={ROUTES.MATCHES_PAGE.PATH}
-                    element={<MatchesPage />}
-                />
-                <Route
-                    path={ROUTES.PROFILE_PAGE.PATH}
-                    element={<ProfilePage />}
-                    loader={profilePageLoader}
-                />
-                <Route
-                    path={ROUTES.CREATE_PROFILE_PAGE.PATH}
-                    element={<CreateProfilePage />}
-                    loader={createProfilePageLoader}
-                />
-            </Route>
-            <Route element={<AnonymousRoute redirectPath={ROUTES.MATCHING_PAGE.PATH} />}>
-                <Route
-                    path={ROUTES.REGISTRATION_PAGE.PATH}
-                    element={<RegistrationPage />}
-                    errorElement={<RegistrationPage />}
-                    action={registrationAction}
-                />
-                <Route
-                    path={ROUTES.LOGIN_PAGE.PATH}
-                    element={<LoginPage />}
-                    errorElement={<LoginPage />}
-                    action={loginAction}
-                />
-            </Route>
+            />
+            <Route
+                path={ROUTES.MATCHES_PAGE.PATH}
+                element={
+                    <GuardedRoute>
+                        <MatchesPage />
+                    </GuardedRoute>
+                }
+           />
+            <Route
+                path={ROUTES.PROFILE_PAGE.PATH}
+                element={
+                    <GuardedRoute>
+                        <ProfilePage />
+                    </GuardedRoute>
+                } 
+                loader={profilePageLoader}
+            />
+            <Route
+                path={ROUTES.CREATE_PROFILE_PAGE.PATH}
+                element={
+                    <GuardedRoute>
+                        <CreateProfilePage />
+                    </GuardedRoute>
+                }
+                loader={createProfilePageLoader}
+            />
+            <Route
+                path={ROUTES.REGISTRATION_PAGE.PATH}
+                element={
+                    <AnonymousRoute>
+                        <RegistrationPage />
+                    </AnonymousRoute>}
+                errorElement={<RegistrationPage />}
+                action={registrationAction}
+            />
+            <Route
+                path={ROUTES.LOGIN_PAGE.PATH}
+                element={
+                    <AnonymousRoute>
+                        <LoginPage />
+                    </AnonymousRoute>
+                }
+                errorElement={<LoginPage />}
+                action={loginAction}
+            />
         </Route>
     )
 );
