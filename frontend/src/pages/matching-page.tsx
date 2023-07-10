@@ -34,17 +34,11 @@ const MatchingPage = () => {
         handleMouseMove
     } = useSwipe();
     const error = useActionData() as Error | undefined;
-    const profiles = useLoaderData() as Profile[] | null;
+    const profiles = useLoaderData() as Profile[];
     const [profileIndex, setProfileIndex] = useState(0);
     const [swipeResults, setSwipeResults] = useState<Array<{profileId: number, accepted: boolean}>>([]);
     const form = useRef<HTMLFormElement>(null); 
     const submit = useSubmit();
-    const navigate = useNavigate();
-
-    if (!profiles) {
-        navigate(ROUTES.CREATE_PROFILE_PAGE.PATH);
-        return null;
-    }
 
     useEffect(() => {
         setProfileIndex(0);

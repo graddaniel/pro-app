@@ -165,12 +165,18 @@ export default class ProfilesService {
 
     getProfileByAccountId = async (
         accountId: number
-    ): Promise<ProfileModel | null> => {
-        return await ProfileModel.findOne({
+    ): Promise<ProfileModel> => {
+        const profile = await ProfileModel.findOne({
             where: {
                 accountId,
             }
         });
+
+        if (!profile) {
+            throw new ProfileNotFoundError(accountId);
+        }
+
+        return profile;
     }
 
     getProfileById = async (

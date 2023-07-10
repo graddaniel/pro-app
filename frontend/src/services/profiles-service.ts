@@ -1,4 +1,7 @@
 import axios from 'axios';
+import { StatusCodes } from 'http-status-codes';
+
+import AccountHasNoProfileError from './errors/account-has-no-profile-error';
 
 export interface Profile {
     id: number;
@@ -27,7 +30,7 @@ class ProfilesService {
         }
     }
 
-    static getProfileOfAccount = async (): Promise<Profile | null> => {
+    static getProfileOfAccount = async (): Promise<Profile> => {
         const token = `Bearer ${localStorage.getItem('token')}`;
 
         try {
@@ -37,15 +40,17 @@ class ProfilesService {
                 }
             });
 
-            return response.data as Profile | null;
+            return response.data as Profile;
         } catch (error) {
             console.error(`[Service Error]: ${error}`);
-
+            if (error.response.status === StatusCodes.CONFLICT) {
+                throw new AccountHasNoProfileError();
+            }
             throw Error(error.response.data);
         }
     }
 
-    static getMatchesProfiles = async (): Promise<Profile[]> => {
+    static getMatches = async (): Promise<Profile[]> => {
         const token = `Bearer ${localStorage.getItem('token')}`;
 
         try {

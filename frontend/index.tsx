@@ -30,7 +30,6 @@ import matchingPageLoader from './src/loaders/matching-page-loader';
 import matchingPageAction from './src/actions/matching-page.action';
 import matchesPageLoader from './src/loaders/matches-page-loader';
 import profilePageLoader from './src/loaders/profile-page-loader';
-import createProfilePageLoader from './src/loaders/create-profile-page-loader';
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -73,7 +72,6 @@ const router = createBrowserRouter(
                         <CreateProfilePage />
                     </GuardedRoute>
                 }
-                loader={createProfilePageLoader}
             />
             <Route
                 path={ROUTES.REGISTRATION_PAGE.PATH}

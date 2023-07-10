@@ -8,6 +8,8 @@ import type ProfilesService from '../services/profiles-service';
 import ProfileValidator from './validators/profile-validator';
 import SwipeValidator from './validators/swipe-validator';
 
+import AccountHasNoProfileError from './errors/account-has-no-profile-error';
+
 export default class ProfilesController {
     private profilesService: ProfilesService;
 
@@ -38,11 +40,15 @@ export default class ProfilesController {
             id: accountId
         } = req.currentUser;
 
-        const profile = await this.profilesService.getProfileByAccountId(
-            accountId
-        );
+        try {
+            const profile = await this.profilesService.getProfileByAccountId(
+                accountId
+            );
 
-        res.status(StatusCodes.OK).send(profile);
+            res.status(StatusCodes.OK).send(profile);
+        } catch (error) {
+            throw new AccountHasNoProfileError(accountId);
+        };
     };
 
     getMatches = async (

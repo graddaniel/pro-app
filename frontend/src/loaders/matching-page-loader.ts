@@ -1,21 +1,21 @@
-import {
-    redirect
-} from 'react-router-dom';
+import { redirect } from 'react-router-dom';
 
+import AccountHasNoProfileError from '../services/errors/account-has-no-profile-error';
 import ProfilesService from '../services/profiles-service';
+
 import ROUTES from '../consts/routes';
 
 const matchingPageLoader = async () => {
     try {
-        const profile = await ProfilesService.getProfileOfAccount();
-
-        if (!profile) {
-            return redirect(ROUTES.CREATE_PROFILE_PAGE.PATH);
-        }
+        await ProfilesService.getProfileOfAccount();
 
         return await ProfilesService.getProfiles();
     } catch (error) {
-        return error;
+        if (error instanceof AccountHasNoProfileError) {
+            return redirect(ROUTES.CREATE_PROFILE_PAGE.PATH);
+        }
+
+        throw error;
     }
 }
 
