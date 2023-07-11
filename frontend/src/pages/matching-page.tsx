@@ -8,8 +8,7 @@ import {
     useLoaderData,
     Form,
     useSubmit,
-    useActionData,
-    useNavigate
+    useActionData
 } from 'react-router-dom';
 import {
     Alert
@@ -22,8 +21,6 @@ import {
 import ProfileCard from '../components/profile-card';
 
 import useSwipe from '../hooks/useSwipe';
-
-import ROUTES from '../consts/routes';
 
 const MatchingPage = () => {
     const {
