@@ -2,7 +2,6 @@ import {
     redirect
 } from 'react-router-dom';
 
-import AccountHasNoProfileError from '../services/errors/account-has-no-profile-error';
 import ProfilesService from '../services/profiles-service';
 
 import ROUTES from '../consts/routes';
@@ -15,10 +14,8 @@ const createProfilePageLoader = async () => {
             return redirect(ROUTES.PROFILE_PAGE.PATH);
         }
 
+        return null;
     } catch (error) {
-        if (error instanceof AccountHasNoProfileError) {
-            return null;
-        }
         throw error;
     }
 }
