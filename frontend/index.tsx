@@ -7,6 +7,7 @@ import {
 import {
     createBrowserRouter,
     createRoutesFromElements,
+    Outlet,
     Route,
     RouterProvider
 } from 'react-router-dom';
@@ -30,6 +31,7 @@ import matchingPageLoader from './src/loaders/matching-page-loader';
 import matchingPageAction from './src/actions/matching-page.action';
 import matchesPageLoader from './src/loaders/matches-page-loader';
 import profilePageLoader from './src/loaders/profile-page-loader';
+import authorizationLoader from './src/loaders/authorization-loader';
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -38,41 +40,30 @@ const router = createBrowserRouter(
             element={<Application />}
         >
             <Route
-                path={ROUTES.MATCHING_PAGE.PATH}
-                element={
-                    <GuardedRoute>
-                        <MatchingPage />
-                    </GuardedRoute>
-                }
-                loader={matchingPageLoader}
-                action={matchingPageAction}
-            />
-            <Route
-                path={ROUTES.MATCHES_PAGE.PATH}
-                element={
-                    <GuardedRoute>
-                        <MatchesPage />
-                    </GuardedRoute>
-                }
-                loader={matchesPageLoader}
-            />
-            <Route
-                path={ROUTES.PROFILE_PAGE.PATH}
-                element={
-                    <GuardedRoute>
-                        <ProfilePage />
-                    </GuardedRoute>
-                }
-                loader={profilePageLoader}
-            />
-            <Route
-                path={ROUTES.CREATE_PROFILE_PAGE.PATH}
-                element={
-                    <GuardedRoute>
-                        <CreateProfilePage />
-                    </GuardedRoute>
-                }
-            />
+                element={<Outlet />}
+                loader={authorizationLoader}
+            >
+                <Route
+                    path={ROUTES.MATCHING_PAGE.PATH}
+                    element={<MatchingPage />}
+                    loader={matchingPageLoader}
+                    action={matchingPageAction}
+                />
+                <Route
+                    path={ROUTES.MATCHES_PAGE.PATH}
+                    element={<MatchesPage />}
+                    loader={matchesPageLoader}
+                />
+                <Route
+                    path={ROUTES.PROFILE_PAGE.PATH}
+                    element={<ProfilePage />}
+                    loader={profilePageLoader}
+                />
+                <Route
+                    path={ROUTES.CREATE_PROFILE_PAGE.PATH}
+                    element={<CreateProfilePage />}
+                />
+            </Route>
             <Route
                 path={ROUTES.REGISTRATION_PAGE.PATH}
                 element={
