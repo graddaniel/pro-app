@@ -31,6 +31,7 @@ export default class ProfilesService {
         accountId: number
     ): Promise<ProfileModel[]> => {
         const accountProfile = await this.getProfileByAccountId(accountId);
+
         const {
             id: profileId,
             role
@@ -127,6 +128,7 @@ export default class ProfilesService {
         accountId: number
     ): Promise<ProfileModel[]> => {
         const accountProfile = await this.getProfileByAccountId(accountId);
+
         const {
             id: profileId,
             role

@@ -1,7 +1,12 @@
 import React from 'react';
-import { Box, Typography } from '@mui/material';
+import {
+    Box,
+    Typography
+} from '@mui/material';
 
-import { Profile } from '../services/profiles-service';
+import {
+    Profile
+} from '../services/profiles-service';
 import FakePhoto from '../../assets/images/profile.jpg';
 
 import classes from './profile-card.module.css';

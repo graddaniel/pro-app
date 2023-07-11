@@ -5,6 +5,7 @@ import {
 import AuthService, {
     RegistrationData,
 } from '../services/auth-service';
+import ROUTES from '../consts/routes';
 
 const registrationAction = async ({ request }) => {
     const form = await request.formData();
@@ -13,7 +14,7 @@ const registrationAction = async ({ request }) => {
     const token = await AuthService.register(registrationData);
     localStorage.setItem('token', token);
 
-    return redirect('/');
+    return redirect(ROUTES.CREATE_PROFILE_PAGE.PATH);
 };
 
 export default registrationAction;
