@@ -20,7 +20,6 @@ import RegistrationPage from './src/pages/registration/registration-page';
 import LoginPage from './src/pages/login/login-page';
 import CreateProfilePage from './src/pages/create-profile-page';
 
-import GuardedRoute from './src/components/guarded-route';
 import AnonymousRoute from './src/components/anonymous-route';
 
 import ROUTES from './src/consts/routes';
