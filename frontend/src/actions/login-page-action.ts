@@ -3,6 +3,7 @@ import {
 } from 'react-router-dom';
 
 import AuthService, { LoginData } from '../services/auth-service';
+import ROUTES from '../consts/routes';
 
 const loginAction = async ({ request }) => {
     const form = await request.formData();
@@ -10,7 +11,7 @@ const loginAction = async ({ request }) => {
 
     const token = await AuthService.login(loginData);
     localStorage.setItem('token', token);
-    return redirect('/');
+    return redirect(ROUTES.MATCHING_PAGE.PATH);
 };
 
 export default loginAction;

@@ -4,7 +4,7 @@ import ProfilesService from '../services/profiles-service';
 
 import ROUTES from '../consts/routes';
 
-const matchingPageLoader = async () => {
+const matchesPageLoader = async () => {
     try {
         const profile = await ProfilesService.getProfileOfAccount();
 
@@ -12,10 +12,10 @@ const matchingPageLoader = async () => {
             return redirect(ROUTES.CREATE_PROFILE_PAGE.PATH);
         }
 
-        return await ProfilesService.getProfiles();
+        return await ProfilesService.getMatches();
     } catch (error) {
         throw error;
     }
-}
+};
 
-export default matchingPageLoader;
+export default matchesPageLoader;

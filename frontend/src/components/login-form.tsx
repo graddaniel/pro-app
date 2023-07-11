@@ -6,13 +6,16 @@ import {
     FormGroup,
     Paper,
     Button,
-    TextField
+    TextField,
+    Typography
 } from '@mui/material';
 import {
-    Form
+    Form,
+    Link
 } from 'react-router-dom';
 
 import INPUT_VALIDATION from '../config/input-validation';
+import ROUTES from '../consts/routes';
 
 import classes from './login-form.module.css';
 
@@ -56,6 +59,10 @@ const LoginForm = () => {
                     </Button>
                 </FormGroup>
             </Form>
+            <Typography sx={{ marginTop: '1rem' }}>
+                No account yet?{' '}
+                <Link to={ROUTES.REGISTRATION_PAGE.PATH}>Sign up!</Link>
+            </Typography>
         </Paper>
     );
 };

@@ -31,6 +31,7 @@ export default class ProfilesService {
         accountId: number
     ): Promise<ProfileModel[]> => {
         const accountProfile = await this.getProfileByAccountId(accountId);
+
         const {
             id: profileId,
             role
@@ -123,6 +124,38 @@ export default class ProfilesService {
         return profiles;
     }
 
+    getMatches = async (
+        accountId: number
+    ): Promise<ProfileModel[]> => {
+        const accountProfile = await this.getProfileByAccountId(accountId);
+
+        const {
+            id: profileId,
+            role
+        } = accountProfile;
+
+        const profiles = await ProfileModel.findAll({
+            attributes: ['id', 'name', 'age', 'description'],
+            include: [
+                {
+                    model: MatchModel,
+                    attributes: [],
+                    on: role === AccountRoles.CUSTOMER
+                        ? {
+                            customer_profile_id: { [Op.eq]: profileId },
+                            professional_profile_id: { [Op.eq]: col('profile.id') }
+                        }
+                        : {
+                            customer_profile_id: { [Op.eq]: col('profile.id') },
+                            professional_profile_id: { [Op.eq]: profileId }
+                        },
+                    required: true
+                }
+            ],
+        });
+
+        return profiles;
+    }
 
     getProfileByAccountId = async (
         accountId: number
