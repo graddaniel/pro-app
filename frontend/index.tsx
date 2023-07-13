@@ -62,10 +62,6 @@ const router = createBrowserRouter(
                 <Route
                     path={ROUTES.CREATE_PROFILE_PAGE.PATH}
                     element={<CreateProfilePage />}
-                />
-                <Route
-                    path={ROUTES.CREATE_PROFILE_PAGE.PATH}
-                    element={<CreateProfilePage />}
                     action={createProfileAction}
                 />
             </Route>

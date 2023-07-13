@@ -11,11 +11,7 @@ const createProfileAction = async ({ request }) => {
     const form = await request.formData();
     const profileData = Object.fromEntries(form.entries()) as ProfileFormData;
 
-    try {
-        await ProfilesService.createProfile(profileData);
-    } catch (error) {
-        return error;
-    }
+    await ProfilesService.createProfile(profileData);
 
     return redirect(ROUTES.PROFILE_PAGE.PATH);
 };
