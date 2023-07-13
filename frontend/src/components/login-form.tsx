@@ -14,13 +14,10 @@ import {
     Link
 } from 'react-router-dom';
 
-import classes from './login-form.module.css';
+import INPUT_VALIDATION from '../config/input-validation';
 import ROUTES from '../consts/routes';
 
-const InputProps = {
-    minLength: 8,
-    maxLength: 32
-};
+import classes from './login-form.module.css';
 
 const LoginForm = () => {
     const [username, setUsername] = React.useState('');
@@ -43,10 +40,7 @@ const LoginForm = () => {
                         value={username}
                         onChange={handleUsernameChange}
                         required
-                        inputProps={{
-                            ...InputProps,
-                            pattern: '^[a-zA-Z0-9]+$'
-                        }}
+                        inputProps={INPUT_VALIDATION.USERNAME}
                     />
                     <TextField
                         name="password"
@@ -55,7 +49,7 @@ const LoginForm = () => {
                         value={password}
                         onChange={handlePasswordChange}
                         required
-                        inputProps={InputProps}
+                        inputProps={INPUT_VALIDATION.PASSWORD}
                     />
                     <Button
                         type="submit"

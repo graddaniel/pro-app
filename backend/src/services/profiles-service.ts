@@ -205,7 +205,7 @@ export default class ProfilesService {
             throw new ProfileAlreadyExistsError();
         }
 
-        ProfileModel.create({
+        await ProfileModel.create({
             accountId,
             name,
             age,

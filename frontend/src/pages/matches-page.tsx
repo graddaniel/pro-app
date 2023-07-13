@@ -2,9 +2,18 @@ import React from 'react';
 import {
     useLoaderData
 } from 'react-router-dom';
-import { Avatar, List, ListItem, ListItemAvatar, ListItemButton, ListItemText } from "@mui/material";
+import {
+    Avatar,
+    List,
+    ListItem,
+    ListItemAvatar,
+    ListItemButton,
+    ListItemText
+} from "@mui/material";
 
-import { Profile } from '../services/profiles-service';
+import {
+    Profile
+} from '../services/profiles-service';
 
 import classes from './matches-page.module.css';
 
