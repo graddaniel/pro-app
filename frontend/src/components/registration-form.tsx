@@ -10,7 +10,7 @@ import React, {
     useCallback
 } from 'react';
 import {
-    Form,
+    Form, useActionData,
 } from 'react-router-dom';
 
 import INPUT_VALIDATION from '../config/input-validation';
@@ -21,13 +21,22 @@ const RegistrationForm = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [isPasswordMatch, setIsPasswordMatch] = useState(true);
     const [email, setEmail] = useState('');
 
     const handleUsernameChange = useCallback((event: ChangeEvent<HTMLInputElement>) => setUsername(event.target.value), []);
     const handlePasswordChange = useCallback((event: ChangeEvent<HTMLInputElement>) => setPassword(event.target.value), []);
-    const handleConfirmPasswordChange = useCallback((event: ChangeEvent<HTMLInputElement>) => setConfirmPassword(event.target.value), []);
+    const handleConfirmPasswordChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+        setConfirmPassword(event.target.value)
+        setIsPasswordMatch(true);
+    }, []);
     const handleEmailChange = useCallback((event: ChangeEvent<HTMLInputElement>) => setEmail(event.target.value), []);
-        
+    const handlePasswordsMatch = useCallback(() => {
+        if (password !== '' && confirmPassword !== '') {
+            setIsPasswordMatch(password === confirmPassword);
+        }
+    }, [password, confirmPassword]);
+
     return (
         <Paper
             elevation={3}
@@ -45,7 +54,7 @@ const RegistrationForm = () => {
                         inputProps={INPUT_VALIDATION.USERNAME}
                     />
                     <TextField
-                        name="password"  
+                        name="password"
                         label="password"
                         type="password"
                         value={password}
@@ -54,12 +63,13 @@ const RegistrationForm = () => {
                         inputProps={INPUT_VALIDATION.PASSWORD}
                     />
                     <TextField
-                        name="confirm-password"
+                        name="confirmPassword"
                         label="confirm password"
                         type="password"
                         value={confirmPassword}
                         onChange={handleConfirmPasswordChange}
-                        error={password !== confirmPassword}
+                        onBlur={handlePasswordsMatch}
+                        error={!isPasswordMatch}
                         required
                         inputProps={INPUT_VALIDATION.PASSWORD}
                     />
@@ -74,6 +84,7 @@ const RegistrationForm = () => {
                     <Button
                         type="submit"
                         variant="contained"
+                        disabled={!isPasswordMatch}
                     >
                         Sign Up
                     </Button>

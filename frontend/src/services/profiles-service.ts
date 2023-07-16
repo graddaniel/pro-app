@@ -5,6 +5,7 @@ export interface Profile {
     id: number;
     name: string;
     role: string;
+    age: number;
     description: string;
     accountId: number;
 }

@@ -14,8 +14,8 @@ const INPUT_VALIDATION = {
         pattern: '^[a-zA-Z0-9 ]+$'
     },
     PROFILE_AGE: {
-        min: 1,
-        max: 120,
+        min: 18,
+        max: 100,
         step: 1
     },
     PROFILE_DESCRIPTION: {

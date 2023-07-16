@@ -8,7 +8,14 @@ import {
     ListItem,
     ListItemAvatar,
     ListItemButton,
-    ListItemText
+    ListItemText,
+    Table,
+    TableContainer,
+    Paper,
+    TableHead,
+    TableRow,
+    TableCell,
+    TableBody
 } from "@mui/material";
 
 import {
@@ -22,25 +29,32 @@ const MatchesPage = () => {
 
     return (
         <article className={classes.container}>
-            { profiles.length === 0 ? (
-        <h2>No matches profiles</h2>
-    ) : ( 
-        <List dense sx={{
-            backgroundColor: 'background.paper',
-            minWidth: 300
-        }}>
-            {profiles.map((profile) => (
-                <ListItem key={profile.id}>
-                    <ListItemButton>
-                        <ListItemAvatar>
-                            <Avatar />
-                        </ListItemAvatar>
-                        <ListItemText primary={profile.name} />
-                    </ListItemButton>
-                </ListItem>
-            ))}
-        </List>
-    ) }
+            {profiles.length === 0 ? (
+                <h2>No matches profiles</h2>
+            ) : (
+                <TableContainer component={Paper} className={classes.tableContainer}>
+                    <Table stickyHeader>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>Photo</TableCell>
+                                <TableCell>Name</TableCell>
+                                <TableCell align='right'>Age</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {profiles.map((profile) => (
+                                <TableRow key={profile.id}>
+                                    <TableCell>
+                                        <Avatar />
+                                    </TableCell>
+                                    <TableCell>{profile.name}</TableCell>
+                                    <TableCell align='right'>{profile.age}</TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            )}
         </article>
     );
 };

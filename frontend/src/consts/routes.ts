@@ -16,6 +16,9 @@ const ROUTES = {
     },
     LOGIN_PAGE: {
         PATH: '/login'
+    },
+    LOGOUT_PAGE: {
+        PATH: '/logout'
     }
 };
 

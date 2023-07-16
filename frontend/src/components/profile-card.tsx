@@ -26,7 +26,7 @@ const ProfileCard = ({ profile }: ProfileCardProps) => {
                     alt="Profile images"
                 />
             </Box>
-            <Typography component="h2" variant="h5">Name: {profile.name}</Typography>
+            <Typography component="h2" variant="h5">Name: {profile.name} (Age: {profile.age})</Typography>
             <Typography component="p" variant='body1'>Description: {profile.description}</Typography>
         </Box>
     )

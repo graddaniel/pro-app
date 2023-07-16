@@ -31,6 +31,10 @@
         "description": {
             "minLength": 1,
             "maxLength": 256
+        },
+        "age": {
+            "min": 18,
+            "max": 100
         }
     }
 }

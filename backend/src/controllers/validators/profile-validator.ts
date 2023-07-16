@@ -21,7 +21,10 @@ const newProfileSchema = object({
         .matches(new RegExp(validationConfig.name.regexp))
         .min(validationConfig.name.minLength)
         .max(validationConfig.name.maxLength),
-    age: number().required(),
+    age: number()
+        .required()
+        .min(validationConfig.age.min)
+        .max(validationConfig.age.max),
     description: string()
         .required()
         .min(validationConfig.description.minLength)

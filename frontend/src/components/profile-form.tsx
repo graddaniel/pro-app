@@ -24,7 +24,7 @@ import classes from './profile-form.module.css';
 const ProfileForm = () => {
     const [name, setName] = React.useState('');
     const [role, setRole] = React.useState<AccountRoles>(AccountRoles.CUSTOMER);
-    const [age, setAge] = React.useState(0);
+    const [age, setAge] = React.useState(18);
     const [description, setDescription] = React.useState('');
 
     const handleNameChange = useCallback((event: ChangeEvent<HTMLInputElement>) => setName(event.target.value), []);

@@ -32,6 +32,7 @@ import profilePageLoader from './src/loaders/profile-page-loader';
 import authorizationLoader from './src/loaders/authorization-loader';
 import matchingPageAction from './src/actions/matching-page-action';
 import createProfileAction from './src/actions/create-profile-action';
+import logoutAction from './src/actions/logout-action';
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -58,6 +59,7 @@ const router = createBrowserRouter(
                     path={ROUTES.PROFILE_PAGE.PATH}
                     element={<ProfilePage />}
                     loader={profilePageLoader}
+                    action={logoutAction}
                 />
                 <Route
                     path={ROUTES.CREATE_PROFILE_PAGE.PATH}

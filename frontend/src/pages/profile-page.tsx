@@ -1,9 +1,11 @@
 import React from 'react';
 import {
-    useLoaderData
+    Link,
+    useLoaderData,
+    useSubmit
 } from 'react-router-dom';
 import {
-    Box, Typography
+    Box, Button, Typography
 } from '@mui/material';
 
 import {
@@ -16,6 +18,11 @@ import classes from './profile-page.module.css';
 
 const ProfilePage = () => {
     const profile = useLoaderData() as Profile;
+    const submit = useSubmit();
+
+    const handleLogout = async () => {
+        submit(null, { method: 'POST' });
+    };
 
     return (
         <Box
@@ -25,8 +32,14 @@ const ProfilePage = () => {
             <Typography component="h1" variant="h3">
                 Your Profile
             </Typography>
-            <ProfileCard profile={profile}/>
-        </Box>
+            <ProfileCard profile={profile} />
+            <Button
+                variant='contained'
+                color='primary'
+                onClick={handleLogout}
+            >Logout
+            </Button>
+        </Box >
     );
 };
 

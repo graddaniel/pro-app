@@ -9,3 +9,11 @@
     
     background-color: lightskyblue;
 }
+
+.tableContainer {
+    max-height: 80vh;
+    max-width: 500px;
+    margin: 0 0.5rem;
+
+    overflow: auto;
+}
