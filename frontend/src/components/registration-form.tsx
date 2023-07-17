@@ -10,9 +10,11 @@ import React, {
     useCallback
 } from 'react';
 import {
-    Form, useActionData,
+    Form,
+    useActionData,
 } from 'react-router-dom';
 
+import type ActionResult from '../generics/action-result';
 import INPUT_VALIDATION from '../config/input-validation';
 
 import classes from './registration-form.module.css';
@@ -21,21 +23,19 @@ const RegistrationForm = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [isPasswordMatch, setIsPasswordMatch] = useState(true);
     const [email, setEmail] = useState('');
+    const actionData = useActionData() as ActionResult | undefined;
 
     const handleUsernameChange = useCallback((event: ChangeEvent<HTMLInputElement>) => setUsername(event.target.value), []);
     const handlePasswordChange = useCallback((event: ChangeEvent<HTMLInputElement>) => setPassword(event.target.value), []);
-    const handleConfirmPasswordChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-        setConfirmPassword(event.target.value)
-        setIsPasswordMatch(true);
-    }, []);
+    const handleConfirmPasswordChange = useCallback((event: ChangeEvent<HTMLInputElement>) => setConfirmPassword(event.target.value), []);
     const handleEmailChange = useCallback((event: ChangeEvent<HTMLInputElement>) => setEmail(event.target.value), []);
-    const handlePasswordsMatch = useCallback(() => {
-        if (password !== '' && confirmPassword !== '') {
-            setIsPasswordMatch(password === confirmPassword);
-        }
-    }, [password, confirmPassword]);
+
+    const isFormValid =
+        username &&
+        password &&
+        confirmPassword &&
+        email;
 
     return (
         <Paper
@@ -59,6 +59,8 @@ const RegistrationForm = () => {
                         type="password"
                         value={password}
                         onChange={handlePasswordChange}
+                        error={actionData?.type === 'password'}
+                        helperText={actionData?.message}
                         required
                         inputProps={INPUT_VALIDATION.PASSWORD}
                     />
@@ -68,8 +70,6 @@ const RegistrationForm = () => {
                         type="password"
                         value={confirmPassword}
                         onChange={handleConfirmPasswordChange}
-                        onBlur={handlePasswordsMatch}
-                        error={!isPasswordMatch}
                         required
                         inputProps={INPUT_VALIDATION.PASSWORD}
                     />
@@ -84,7 +84,7 @@ const RegistrationForm = () => {
                     <Button
                         type="submit"
                         variant="contained"
-                        disabled={!isPasswordMatch}
+                        disabled={!isFormValid}
                     >
                         Sign Up
                     </Button>

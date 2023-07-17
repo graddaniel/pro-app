@@ -9,8 +9,8 @@ const loginAction = async ({ request }) => {
     const form = await request.formData();
     const loginData = Object.fromEntries(form.entries()) as LoginData;
 
-    const token = await AuthService.login(loginData);
-    localStorage.setItem('token', token);
+    await AuthService.login(loginData);
+
     return redirect(ROUTES.MATCHING_PAGE.PATH);
 };
 

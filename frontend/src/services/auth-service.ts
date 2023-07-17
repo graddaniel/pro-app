@@ -13,7 +13,7 @@ export interface RegistrationData {
 }
 
 class AuthService {
-    static login = async ({ username, password }: LoginData): Promise<string> => {
+    static login = async ({ username, password }: LoginData): Promise<void> => {
         const credentials = btoa(`${username}:${password}`);
 
         try {
@@ -23,14 +23,14 @@ class AuthService {
                 }
             });
 
-            return response.data;
+            localStorage.setItem('token', response.data);
         } catch (error) {
             console.error(`[Service Error]: ${error}`);
             throw Error(error.response.data);
         }
     }
 
-    static register = async ({ username, password, email }: RegistrationData): Promise<string> => {
+    static register = async ({ username, password, email }: RegistrationData): Promise<void> => {
         const credentials = btoa(`${username}:${password}`);
         const requestBody = {
             email
@@ -43,11 +43,14 @@ class AuthService {
                 }
             });
 
-            return response.data;
+            localStorage.setItem('token', response.data);
         } catch (error) {
             console.error(`[Service Error]: ${error}`);
             throw Error(error.response.data);
         }
+    }
+    static logout = (): void => {
+        localStorage.removeItem('token');
     }
 }
 

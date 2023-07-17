@@ -30,7 +30,7 @@ const MatchesPage = () => {
     return (
         <article className={classes.container}>
             {profiles.length === 0 ? (
-                <h2>No matches profiles</h2>
+                <h2>No matches</h2>
             ) : (
                 <TableContainer component={Paper} className={classes.tableContainer}>
                     <Table stickyHeader>
